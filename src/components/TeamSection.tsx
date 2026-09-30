@@ -82,7 +82,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
       {/* Subtle ambient light aura */}
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-indigo-500/10 dark:bg-indigo-500/5 blur-3xl rounded-full pointer-events-none -z-0" />
 
-      <div className="relative z-10 max-w-[1536px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 space-y-10">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-8 sm:px-12 md:px-24 lg:px-32 2xl:px-64 space-y-10">
         
         {/* Editorial Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-slate-200/80 dark:border-slate-800/80 pb-8">

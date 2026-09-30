@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { NotFound } from './components/NotFound';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProjectCard } from './components/ProjectCard';
@@ -57,7 +58,7 @@ export default function App() {
   // Search & Navigation
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const [activeSection, setActiveSection] = useState<'projetos' | 'blog' | 'equipe' | 'criadores'>('projetos');
+  const [activeSection, setActiveSection] = useState<'projetos' | 'blog' | 'equipe' | 'criadores' | 'notfound'>('projetos');
   
   // Route state for separate article pages
   const [currentArticleSlug, setCurrentArticleSlug] = useState<string | null>(null);
@@ -66,16 +67,21 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash.startsWith('#/blog/')) {
+      if (hash === '' || hash === '#/') {
+        setActiveSection('projetos');
+        setCurrentArticleSlug(null);
+      } else if (hash.startsWith('#/blog/')) {
         const slug = hash.replace('#/blog/', '');
         if (slug && slug !== 'all') {
           setCurrentArticleSlug(slug);
           setActiveSection('blog');
         } else {
           setCurrentArticleSlug(null);
+          setActiveSection('blog');
           resetDefaultSEO();
         }
       } else {
+        setActiveSection('notfound');
         setCurrentArticleSlug(null);
         resetDefaultSEO();
       }
@@ -322,7 +328,10 @@ export default function App() {
       )}
 
       {/* Main Content Area with Fluid Responsive Width for Desktop & Mobile */}
-      <main id="main-content" className="flex-1 w-full max-w-[1536px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 py-10 sm:py-14 space-y-12 sm:space-y-16">
+      <main id="main-content" className="flex-1 w-full max-w-[1600px] mx-auto px-8 sm:px-12 md:px-24 lg:px-32 2xl:px-64 py-10 sm:py-14 space-y-12 sm:space-y-16">
+        
+        {/* NOT FOUND ROUTE */}
+        {activeSection === 'notfound' && <NotFound onNavigate={handleNavigate} />}
         
         {/* SECTION 1: PROJECTS GALLERY */}
         {activeSection === 'projetos' && (

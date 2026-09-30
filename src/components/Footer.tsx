@@ -53,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -z-0" />
       <div className="absolute bottom-0 left-10 w-96 h-96 bg-sky-500/5 dark:bg-sky-500/5 rounded-full blur-3xl pointer-events-none -z-0" />
 
-      <div className="relative z-10 max-w-[1536px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 space-y-14">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-8 sm:px-12 md:px-24 lg:px-32 2xl:px-64 space-y-14">
         
         {/* Top Call-to-Action Banner */}
         <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 dark:from-slate-900/90 dark:via-indigo-950/80 dark:to-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-12 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">

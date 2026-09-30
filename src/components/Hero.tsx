@@ -26,7 +26,7 @@ export const Hero: React.FC<HeroProps> = ({
   const categories = ['Todos', 'SaaS', 'E-Commerce', 'Portfólio', 'Web App', 'Landing Page'];
 
   return (
-    <section className="relative bg-white dark:bg-slate-950 text-slate-900 dark:text-white pt-8 pb-10 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-14 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors overflow-hidden">
+    <section className="relative bg-white dark:bg-slate-950 text-slate-900 dark:text-white pt-8 pb-10 sm:pt-10 sm:pb-10 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors overflow-hidden lg:h-[85vh] lg:flex lg:flex-col lg:justify-center">
       
       {/* Soft Ambient Radial Aura Background */}
       <div className="absolute top-1/3 right-0 -translate-y-1/2 w-[400px] h-[400px] sm:w-[650px] sm:h-[650px] lg:w-[850px] lg:h-[850px] bg-gradient-to-tr from-indigo-500/15 via-sky-400/15 to-purple-500/10 dark:from-indigo-600/20 dark:via-sky-500/10 dark:to-purple-600/15 rounded-full blur-3xl pointer-events-none -z-0" />
@@ -125,25 +125,25 @@ export const Hero: React.FC<HeroProps> = ({
                   {projectsCount}+
                 </div>
                 <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                  Projetos no portfólio
+                  Soluções entregues
                 </div>
               </div>
 
               <div>
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-display text-slate-900 dark:text-white">
-                  Full-Stack
+                  Foco
                 </div>
                 <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                  React & Spring Boot
+                  No seu resultado
                 </div>
               </div>
 
               <div>
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-display text-slate-900 dark:text-white">
-                  WCAG 2.1
+                  Uso
                 </div>
                 <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                  Acessibilidade AA
+                  Intuitivo e fácil
                 </div>
               </div>
             </motion.div>
@@ -188,7 +188,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-violet-400/30 rounded-full blur-2xl pointer-events-none" />
 
                 <img
-                  src="/src/assets/images/real_premise_minimal_logo_1790719519164.jpg"
+                  src="/images/real_premise_minimal_logo_1790719519164.jpg"
                   alt="REALPREMISE Logo Oficial"
                   className="w-full h-full object-cover rounded-full shadow-md relative z-10 transition-transform duration-700 group-hover:scale-105"
                 />

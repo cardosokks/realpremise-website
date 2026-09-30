@@ -3,65 +3,69 @@ import { Layout, Globe, Cpu, Server, Database, Bot, ArrowRight, MessageSquare } 
 
 export const ServicesSection: React.FC = () => {
   const services = [
-    { title: 'Landing Pages', icon: Layout, description: 'Alta conversão e design moderno.' },
-    { title: 'Sites Institucionais', icon: Globe, description: 'Presença digital profissional.' },
-    { title: 'Sistemas IOT', icon: Cpu, description: 'Conectividade e controle inteligente.' },
-    { title: 'SaaS', icon: Server, description: 'Software como serviço escalável.' },
-    { title: 'Crawlers', icon: Database, description: 'Extração e análise de dados.' },
-    { title: 'Automações', icon: Bot, description: 'Processos otimizados e eficientes.' },
+    { title: 'Landing Pages', icon: Layout, description: 'Design moderno focado em conversão e performance.' },
+    { title: 'Sites Institucionais', icon: Globe, description: 'Identidade digital profissional e robusta.' },
+    { title: 'Sistemas IoT', icon: Cpu, description: 'Conectividade inteligente e controle em tempo real.' },
+    { title: 'SaaS', icon: Server, description: 'Sistemas escaláveis com arquitetura limpa.' },
+    { title: 'Crawlers', icon: Database, description: 'Extração e análise inteligente de dados.' },
+    { title: 'Automações', icon: Bot, description: 'Processos otimizados para eficiência total.' },
   ];
 
   return (
-    <section className="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 text-center">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight mb-4">
-          Nossos Serviços Especializados
-        </h2>
-        <p className="text-lg text-slate-600 dark:text-slate-400 mb-16 max-w-2xl mx-auto">
-          Transformamos ideias complexas em soluções digitais robustas, escaláveis e de alto desempenho.
-        </p>
+    <section className="py-24 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+      <div className="max-w-[1600px] mx-auto px-8 sm:px-10 md:px-16 lg:px-20 2xl:px-32">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight mb-6">
+            Soluções Especializadas
+          </h2>
+          <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+            Engenharia de ponta para transformar desafios complexos em produtos digitais de alto impacto.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, idx) => {
             const Icon = service.icon;
             return (
               <div
                 key={idx}
-                className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all text-left"
+                className="group bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300"
               >
-                <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center mb-6 text-indigo-600 dark:text-indigo-400">
+                <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center mb-8 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform duration-300">
                   <Icon className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{service.title}</h3>
-                <p className="text-slate-600 dark:text-slate-400">{service.description}</p>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">{service.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{service.description}</p>
               </div>
             );
           })}
         </div>
 
-        <div className="mt-20 bg-indigo-600 rounded-3xl p-8 sm:p-12 text-center text-white shadow-xl">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-6">Pronto para transformar sua ideia em realidade?</h3>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={() => {
-                const chatWidget = document.querySelector('[aria-label="Atendimento Online e Suporte"] button');
-                if (chatWidget instanceof HTMLElement) chatWidget.click();
-              }}
-              className="px-8 py-4 bg-white text-indigo-600 rounded-2xl font-bold hover:bg-slate-100 transition-colors flex items-center gap-2"
-            >
-              <MessageSquare className="w-5 h-5" />
-              Falar no Chat
-            </button>
-            <button
-              onClick={() => {
-                const whatsappLink = 'https://wa.me/556192035053';
-                window.open(whatsappLink, '_blank');
-              }}
-              className="px-8 py-4 bg-indigo-700 text-white rounded-2xl font-bold hover:bg-indigo-800 transition-colors flex items-center gap-2 border border-indigo-500"
-            >
-              Falar no WhatsApp
-              <ArrowRight className="w-5 h-5" />
-            </button>
+        <div className="mt-24 bg-indigo-600 rounded-3xl p-10 sm:p-16 text-center text-white shadow-2xl relative overflow-hidden">
+          <div className="relative z-10">
+            <h3 className="text-3xl sm:text-4xl font-bold mb-8">Pronto para transformar sua ideia em realidade?</h3>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <button
+                onClick={() => {
+                  const chatWidget = document.querySelector('[aria-label="Atendimento Online e Suporte"] button');
+                  if (chatWidget instanceof HTMLElement) chatWidget.click();
+                }}
+                className="px-10 py-5 bg-white text-indigo-600 rounded-2xl font-bold hover:bg-slate-100 transition-all shadow-lg flex items-center gap-3 text-lg cursor-pointer"
+              >
+                <MessageSquare className="w-6 h-6" />
+                Falar no Chat
+              </button>
+              <button
+                onClick={() => {
+                  const whatsappLink = 'https://wa.me/556192035053';
+                  window.open(whatsappLink, '_blank');
+                }}
+                className="px-10 py-5 bg-indigo-700 text-white rounded-2xl font-bold hover:bg-indigo-800 transition-all flex items-center gap-3 border border-indigo-500 text-lg cursor-pointer"
+              >
+                Falar no WhatsApp
+                <ArrowRight className="w-6 h-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

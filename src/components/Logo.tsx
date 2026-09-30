@@ -40,7 +40,7 @@ export const Logo: React.FC<LogoProps> = ({
           className={`relative ${sizeClasses[size]} rounded-full p-[1.5px] bg-white dark:bg-white shadow-sm ring-1 ring-slate-200/90 dark:ring-white/40 flex items-center justify-center transition-transform group-hover:scale-105 shrink-0 overflow-hidden`}
         >
           <img
-            src="/src/assets/images/real_premise_minimal_logo_1790719519164.jpg"
+            src="/images/real_premise_minimal_logo_1790719519164.jpg"
             alt="REALPREMISE Logo"
             className="w-full h-full object-cover rounded-full"
           />
@@ -53,7 +53,7 @@ export const Logo: React.FC<LogoProps> = ({
           }}
         >
           <img
-            src="/src/assets/images/real_premise_minimal_logo_1790719519164.jpg"
+            src="/images/real_premise_minimal_logo_1790719519164.jpg"
             alt="REALPREMISE Logo"
             className="w-full h-full object-cover rounded-full grayscale contrast-125 brightness-100 dark:brightness-105"
           />
@@ -66,7 +66,7 @@ export const Logo: React.FC<LogoProps> = ({
           }}
         >
           <img
-            src="/src/assets/images/real_premise_minimal_logo_1790719519164.jpg"
+            src="/images/real_premise_minimal_logo_1790719519164.jpg"
             alt="REALPREMISE Logo"
             className="w-full h-full object-cover rounded-full mix-blend-normal"
           />

@@ -70,7 +70,7 @@ export function updateArticleSEO(post: BlogPost) {
       'name': 'REALPREMISE',
       'logo': {
         '@type': 'ImageObject',
-        'url': `${window.location.origin}/src/assets/images/real_premise_minimal_logo_1790719519164.jpg`
+        'url': `${window.location.origin}/images/real_premise_minimal_logo_1790719519164.jpg`
       }
     },
     'mainEntityOfPage': {

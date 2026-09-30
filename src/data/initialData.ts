@@ -4,7 +4,7 @@ export const INITIAL_USER: User = {
   id: 'usr-admin-01',
   name: 'Ricardo Cardoso',
   email: 'ricardo.estudos1998@gmail.com',
-  avatar: '/src/assets/images/ricardo_creator_avatar_1790708000570.jpg',
+  avatar: '/images/ricardo_creator_avatar_1790708000570.jpg',
   role: 'admin'
 };
 
@@ -16,7 +16,7 @@ export const INITIAL_PROJECTS: Project[] = [
     title: 'Nexus SaaS E-Commerce Suite',
     description: 'Plataforma completa de gestão de e-commerce e inventário em tempo real com analytics preditivo.',
     longDescription: 'Desenvolvido do zero com arquitetura moderna, este sistema de gestão de e-commerce oferece dashboard em tempo real para vendas, previsão de estoque e checkout de alta conversão. A API no backend foi desenhada para processar alto volume de requisições por segundo com baixíssima latência.',
-    screenshotUrl: '/src/assets/images/project_ecommerce_saas_1790707906993.jpg',
+    screenshotUrl: '/images/project_ecommerce_saas_1790707906993.jpg',
     liveUrl: 'https://ais-dev-tckwsjpr6cejshhew7mjxv-855330772024.us-east1.run.app',
     githubUrl: 'https://github.com/cardosokks/nexus-ecommerce-suite',
     category: 'SaaS',
@@ -37,7 +37,7 @@ export const INITIAL_PROJECTS: Project[] = [
     title: 'Studio Arc - Arquitetura & Design',
     description: 'Portfólio minimalista e interativo para escritório de arquitetura de luxo com catálogo 3D.',
     longDescription: 'Um site institucional de altíssima elegância para o Studio Arc. Focado na visualização de fotografias de projetos em altíssima definição, experiência de navegação fluido e carregamento ultrarrápido com renderização SSR.',
-    screenshotUrl: '/src/assets/images/project_agency_portfolio_1790707919660.jpg',
+    screenshotUrl: '/images/project_agency_portfolio_1790707919660.jpg',
     liveUrl: 'https://ais-dev-tckwsjpr6cejshhew7mjxv-855330772024.us-east1.run.app',
     githubUrl: 'https://github.com/cardosokks/studio-arc-portfolio',
     category: 'Portfólio',
@@ -58,7 +58,7 @@ export const INITIAL_PROJECTS: Project[] = [
     title: 'Aura AI - Analytics Platform',
     description: 'Dashboard de inteligência de dados com agregação de métricas de redes sociais e conversão.',
     longDescription: 'Plataforma SaaS para análise de dados e performance de marketing. Permite conexão com múltiplas APIs, visualização em gráficos interativos e geração automática de relatórios resumidos por inteligência artificial.',
-    screenshotUrl: '/src/assets/images/project_ai_analytics_1790707930507.jpg',
+    screenshotUrl: '/images/project_ai_analytics_1790707930507.jpg',
     liveUrl: 'https://ais-dev-tckwsjpr6cejshhew7mjxv-855330772024.us-east1.run.app',
     githubUrl: 'https://github.com/cardosokks/aura-ai-analytics',
     category: 'Web App',
@@ -79,7 +79,7 @@ export const INITIAL_PROJECTS: Project[] = [
     title: 'Lumina Editorial & Art Gallery',
     description: 'Galeria virtual e revista digital com curadoria de fotografia contemporânea e artes visuais.',
     longDescription: 'Uma experiência editorial digital com layout inspirados em revistas físicas de moda e arte contemporânea. Possui suporte para galeria em grade maçonaria, modo de leitura contínua e sistema de newsletters integrado.',
-    screenshotUrl: '/src/assets/images/project_creative_gallery_1790707938879.jpg',
+    screenshotUrl: '/images/project_creative_gallery_1790707938879.jpg',
     liveUrl: 'https://ais-dev-tckwsjpr6cejshhew7mjxv-855330772024.us-east1.run.app',
     githubUrl: 'https://github.com/cardosokks/lumina-editorial-gallery',
     category: 'Landing Page',
@@ -308,13 +308,13 @@ Para garantir que apenas usuários autorizados consigam gerenciar os projetos e 
     `,
     category: 'Backend',
     tags: ['Spring Boot', 'PostgreSQL', 'JWT', 'Segurança', 'Java'],
-    coverUrl: '/src/assets/images/project_ecommerce_saas_1790707906993.jpg',
+    coverUrl: '/images/project_ecommerce_saas_1790707906993.jpg',
     publishedAt: '15 de Setembro, 2026',
     readTime: '6 min de leitura',
     viewsCount: 0,
     author: {
       name: 'Ricardo Cardoso',
-      avatar: '/src/assets/images/ricardo_creator_avatar_1790708000570.jpg',
+      avatar: '/images/ricardo_creator_avatar_1790708000570.jpg',
       role: 'Engenheiro Full-Stack Sênior'
     },
     projectId: 'proj-01'
@@ -351,13 +351,13 @@ Garantir que todos os componentes se adaptem com perfeição tanto a dispositivo
     `,
     category: 'Frontend',
     tags: ['React', 'TypeScript', 'Tailwind CSS', 'Acessibilidade', 'UX/UI'],
-    coverUrl: '/src/assets/images/project_agency_portfolio_1790707919660.jpg',
+    coverUrl: '/images/project_agency_portfolio_1790707919660.jpg',
     publishedAt: '20 de Setembro, 2026',
     readTime: '5 min de leitura',
     viewsCount: 0,
     author: {
       name: 'Ricardo Cardoso',
-      avatar: '/src/assets/images/ricardo_creator_avatar_1790708000570.jpg',
+      avatar: '/images/ricardo_creator_avatar_1790708000570.jpg',
       role: 'Engenheiro Full-Stack Sênior'
     },
     projectId: 'proj-02'
@@ -382,13 +382,13 @@ Adicionar recursos inteligentes eleva o patamar de qualquer aplicação web. No 
     `,
     category: 'Inteligência Artificial',
     tags: ['Gemini API', 'AI Integration', 'TypeScript', 'Node.js'],
-    coverUrl: '/src/assets/images/project_ai_analytics_1790707930507.jpg',
+    coverUrl: '/images/project_ai_analytics_1790707930507.jpg',
     publishedAt: '25 de Setembro, 2026',
     readTime: '4 min de leitura',
     viewsCount: 0,
     author: {
       name: 'Ricardo Cardoso',
-      avatar: '/src/assets/images/ricardo_creator_avatar_1790708000570.jpg',
+      avatar: '/images/ricardo_creator_avatar_1790708000570.jpg',
       role: 'Engenheiro Full-Stack Sênior'
     },
     projectId: 'proj-03'
@@ -472,7 +472,7 @@ export const INITIAL_TEAM_MEMBERS: TeamMember[] = [
     name: 'Ricardo Cardoso',
     role: 'Engenheiro de Software Full-Stack & Arquiteto de Soluções',
     bio: 'Especialista no desenvolvimento de sistemas web escaláveis, microsserviços resilientes, APIs RESTful de alta performance e interfaces modernas com acessibilidade (WCAG 2.1 AA). Experiência sólida em React, TypeScript, Spring Boot, PostgreSQL, Docker e Cloud.',
-    avatarUrl: '/src/assets/images/ricardo_creator_avatar_1790708000570.jpg',
+    avatarUrl: '/images/ricardo_creator_avatar_1790708000570.jpg',
     skills: ['React & Next.js', 'TypeScript', 'Node.js / Express', 'Spring Boot', 'PostgreSQL', 'Docker & CI/CD', 'Tailwind CSS', 'WCAG 2.1 AA'],
     githubUrl: 'https://github.com/cardosokks',
     linkedinUrl: 'https://linkedin.com/in/cardosokks',

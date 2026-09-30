@@ -34,7 +34,7 @@ export const CreatorsSection: React.FC = () => {
             <div className="relative group">
               <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-xl border-2 border-indigo-500/30 bg-slate-200 dark:bg-slate-800">
                 <img
-                  src="/src/assets/images/creator_ricardo_cardoso_1790710494036.jpg"
+                  src="/images/creator_ricardo_cardoso_1790710494036.jpg"
                   alt="Retrato de Ricardo Cardoso"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
@@ -46,7 +46,7 @@ export const CreatorsSection: React.FC = () => {
 
             {/* Official Brand Logo */}
             <img
-              src="/src/assets/images/real_premise_minimal_logo_1790719519164.jpg"
+              src="/images/real_premise_minimal_logo_1790719519164.jpg"
               alt="REALPREMISE"
               className="w-10 h-10 rounded-full object-cover shadow-sm border border-slate-200 dark:border-slate-800"
             />
