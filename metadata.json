@@ -1,0 +1,6 @@
+{
+  "name": "REALPREMISE - Portfolio & Showcase",
+  "description": "Portfólio de projetos web e galeria minimalista criada por Ricardo Cardoso (cardosokks).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

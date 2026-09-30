@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  realpremise:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: realpremise_app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - JWT_SECRET=realpremise-jwt-secret-key-2026-production
+    restart: always
