@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Copia manifestos de pacotes
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copia código-fonte e compila os bundles do Vite
 COPY . .
@@ -25,7 +25,7 @@ ENV PORT=3000
 
 # Copia apenas as dependências necessárias de produção
 COPY package*.json ./
-RUN npm install --omit=dev && npm install -g tsx
+RUN npm install --omit=dev --legacy-peer-deps && npm install -g tsx
 
 # Copia arquivos estáticos e servidores compilados
 COPY --from=builder /app/dist ./dist
