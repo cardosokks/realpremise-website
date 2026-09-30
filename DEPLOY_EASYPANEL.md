@@ -19,7 +19,7 @@ Este projeto foi totalmente preparado e arquitetado para rodar em produção no 
    - **Branch:** `main` (ou a branch que preferir).
 
 4. **Configuração de Portas (Ports):**
-   - **Port:** `3000` (porta exposta pelo servidor Express no Dockerfile).
+   - **Port:** `3000` (Certifique-se de configurar a variável `PORT=3000` nas variáveis de ambiente).
 
 5. **Variáveis de Ambiente (Environment Variables):**
    Adicione as variáveis conforme o `.env.example`:
