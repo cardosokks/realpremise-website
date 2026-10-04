@@ -1718,31 +1718,33 @@ async function generateAutonomousNewsArticle(options: {
       let synthesisPrompt = '';
       if (crawledNews) {
         // Base our rewrite on the actual crawled news item
-      synthesisPrompt = `Você é um Jornalista Especialista de Tecnologia, Arquiteto de Software Sênior e Pesquisador da REALPREMISE.
-Sua missão é reescrever e aprofundar uma NOTÍCIA REAL E FACTUAL coletada da web sobre o tema: "${topicPrompt}".
+      synthesisPrompt = `Você é um Arquiteto de Software Sênior e Jornalista Técnico da REALPREMISE. Sua missão é escrever um artigo técnico aprofundado, coerente e completo baseado na notícia factual coletada.
 
-DADOS FACTUAIS DA NOTÍCIA CRAWLEADA:
-- Título Real: "${crawledNews.title}"
-- Fonte: "${crawledNews.source}"
-- Link Original: "${crawledNews.link}"
-- Fatos/Contexto Coletado: "${crawledNews.snippet || 'Lançamento recente com ampla repercussão na comunidade de tecnologia.'}"
+TEMA DA NOTÍCIA: "${topicPrompt}"
+DADOS FACTUAIS: "${crawledNews.snippet || 'Fatos recentes relevantes'}"
+FONTE: ${crawledNews.source} (${crawledNews.link})
 
-DIRETRIZES DE REDAÇÃO JORNALÍSTICA & TÉCNICA (OBRIGATÓRIO):
-1. NUNCA utilize introduções genéricas. Comece imediatamente com o impacto técnico, a novidade fundamental ou o problema resolvido.
-2. Analise profundamente: Por que isso importa? Como altera o fluxo de trabalho de um desenvolvedor sênior?
-3. Estruture o artigo utilizando Markdown padrão e limpo (utilize #, ##, ###, *, -, \` \`\`\` para formatação).
-4. O conteúdo DEVE conter termos técnicos precisos.
-5. Cite a fonte factual no final do artigo: [Fonte Factual / Notícia Original: ${crawledNews.source}](${crawledNews.link}).
-6. Categoria: ${targetCategory}
-7. TÍTULOS JÁ PUBLICADOS (É PROIBIDO REPETIR):
-${titlesBlacklist || '(Nenhum artigo anterior)'}
+ESTRUTURA OBRIGATÓRIA DO ARTIGO (Markdown):
+1. Título Impactante (Jornalístico + Técnico)
+2. Resumo Executivo: 2 frases que resumem o problema e a solução técnica.
+3. Introdução: Contextualização imediata do problema ou inovação.
+4. Análise Técnica: Explicação aprofundada de como funciona, impacto no ecossistema e desafios.
+5. Exemplo Prático/Código: Bloco de código funcional exemplificando a tecnologia/conceito.
+6. Conclusão: Futuro da tecnologia ou impacto de mercado.
+7. Fonte: Link para a notícia original.
 
-Retorne ESTRITAMENTE um objeto JSON válido. NÃO inclua nenhum texto antes ou depois do JSON. O campo "content" deve ser uma string única contendo o artigo em Markdown, com quebras de linha codificadas como \\n.
+DIRETRIZES DE QUALIDADE:
+- O conteúdo DEVE ser extenso e aprofundado. Não crie respostas curtas.
+- O bloco de código é OBRIGATÓRIO.
+- Se o snippet factual for insuficiente, use sua base de conhecimento para preencher os detalhes técnicos com precisão.
+- Use tom de especialista para especialista (sem clichês de marketing).
+
+Retorne ESTRITAMENTE um objeto JSON válido. NÃO inclua texto antes ou depois do JSON.
 {
-  "title": "Título técnico, impactante e jornalístico da notícia",
-  "summary": "Resumo de 2 frases objetivas explicando o acontecimento factual e seu valor técnico prático",
-  "content": "Artigo completo em Markdown rico (mínimo 4 seções com ##, subtítulos ###, tópicos técnicos aprofundados, e OBRIGATORIAMENTE blocos de código/exemplos práticos)",
-  "tags": ["tag1", "tag2", "tag3", "tag4"],
+  "title": "...",
+  "summary": "...",
+  "content": "Artigo completo em Markdown, com introdução, seções detalhadas usando ## e ###, bloco de código, e conclusão.",
+  "tags": ["tag1", "tag2"],
   "readTime": "5 min de leitura"
 }`;
       } else {
