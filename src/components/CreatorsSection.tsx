@@ -15,7 +15,7 @@ export const CreatorsSection: React.FC = () => {
         
         {/* Section Title */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800 text-xs font-semibold text-brand-600 dark:text-brand-400">
             <span>Equipe & Engenharia</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
@@ -32,7 +32,7 @@ export const CreatorsSection: React.FC = () => {
           {/* Creator Portrait Photo & Brand Emblem */}
           <div className="flex flex-col items-center gap-3 shrink-0">
             <div className="relative group">
-              <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-xl border-2 border-indigo-500/30 bg-slate-200 dark:bg-slate-800">
+              <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-xl border-2 border-brand-500/30 bg-slate-200 dark:bg-slate-800">
                 <img
                   src="/images/creator_ricardo_cardoso_1790710494036.jpg"
                   alt="Retrato de Ricardo Cardoso"
@@ -59,7 +59,7 @@ export const CreatorsSection: React.FC = () => {
                 <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white">
                   Ricardo Cardoso
                 </h3>
-                <span className="text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400">
+                <span className="text-xs font-mono font-semibold text-brand-600 dark:text-brand-400">
                   Criador & Arquiteto Lead
                 </span>
               </div>
@@ -94,7 +94,7 @@ export const CreatorsSection: React.FC = () => {
                 href="https://github.com/cardosokks"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 rounded-xl transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-slate-900 dark:bg-brand-600 hover:bg-slate-800 dark:hover:bg-brand-500 rounded-xl transition-colors shadow-sm"
               >
                 <Github className="w-4 h-4" />
                 <span>GitHub @cardosokks</span>

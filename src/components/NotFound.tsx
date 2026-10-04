@@ -19,7 +19,7 @@ export const NotFound: React.FC<NotFoundProps> = ({ onNavigate }) => {
       </div>
       <button
         onClick={() => onNavigate('projetos')}
-        className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-bold rounded-2xl hover:bg-indigo-500 transition-colors shadow-lg cursor-pointer"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white font-bold rounded-2xl hover:bg-brand-500 transition-colors shadow-lg cursor-pointer"
       >
         <ArrowLeft className="w-5 h-5" />
         <span>Voltar para Projetos</span>

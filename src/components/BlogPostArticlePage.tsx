@@ -63,7 +63,7 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
       <div className="flex items-center justify-between">
         <button
           onClick={onBackToBlog}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Voltar ao Blog</span>
@@ -84,7 +84,7 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
         
         {/* Category & Tags */}
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-          <span className="px-3 py-1 rounded-full text-xs font-bold font-mono text-indigo-600 bg-indigo-50 dark:bg-indigo-950 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+          <span className="px-3 py-1 rounded-full text-xs font-bold font-mono text-brand-600 bg-brand-50 dark:bg-brand-950 dark:text-brand-400 border border-brand-200 dark:border-brand-800">
             {post.category}
           </span>
           {post.tags.map((tag) => (
@@ -158,7 +158,7 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
             href={post.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1.5"
+            className="font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1.5"
           >
             <span>Acessar Publicação Original</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -169,14 +169,14 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
       {/* Share Bar */}
       <div className="p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between text-xs">
         <span className="font-semibold text-slate-700 dark:text-slate-300 font-mono flex items-center gap-1.5">
-          <Share2 className="w-4 h-4 text-indigo-500" />
+          <Share2 className="w-4 h-4 text-brand-500" />
           <span>Compartilhar Notícia:</span>
         </span>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleShareWhatsapp}
-            className="px-3 py-1.5 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
+            className="px-3 py-1.5 text-[11px] font-bold text-white bg-brand-primary-600 hover:bg-brand-primary-500 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
           >
             <span>WhatsApp</span>
           </button>
@@ -185,7 +185,7 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
             onClick={handleCopyLink}
             className="px-3 py-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
           >
-            {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+            {copiedLink ? <Check className="w-3.5 h-3.5 text-brand-primary-500" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedLink ? 'Link Copiado!' : 'Copiar URL'}</span>
           </button>
         </div>
@@ -200,12 +200,12 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
           </ReactMarkdown>
           
           {/* IN-ARTICLE SELF-PROMOTIONAL AD CARD */}
-          <div className="my-8 p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-3xl text-white shadow-2xl relative overflow-hidden not-prose">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="my-8 p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 border border-brand-500/40 rounded-3xl text-white shadow-2xl relative overflow-hidden not-prose">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
             
             <div className="relative z-10 space-y-3 text-center sm:text-left">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold font-mono">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/20 border border-brand-400/30 text-brand-300 text-xs font-bold font-mono">
+                <Sparkles className="w-3.5 h-3.5 text-brand-400" />
                 <span>Anúncio Oficial REALPREMISE</span>
               </div>
 
@@ -224,13 +224,13 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
                   rel="noopener noreferrer"
                   className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-900 bg-white hover:bg-slate-100 transition-all shadow-md flex items-center gap-2 cursor-pointer"
                 >
-                  <Phone className="w-4 h-4 text-emerald-600" />
+                  <Phone className="w-4 h-4 text-brand-primary-600" />
                   <span>Falar no WhatsApp (+55 61 9203-5053)</span>
                 </a>
 
                 <a
                   href="mailto:contato@realpremise.com"
-                  className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 border border-indigo-400/30 transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-brand-600 hover:bg-brand-500 border border-brand-400/30 transition-all shadow-md flex items-center gap-2 cursor-pointer"
                 >
                   <Mail className="w-4 h-4" />
                   <span>Solicitar Orçamento</span>
@@ -245,7 +245,7 @@ export const BlogPostArticlePage: React.FC<BlogPostArticlePageProps> = ({
       {/* Related Project Showcase (If associated) */}
       {relatedProject && onOpenProject && (
         <div className="p-6 bg-slate-900 text-white border border-slate-800 rounded-3xl space-y-3">
-          <span className="text-xs font-mono text-indigo-400 font-bold uppercase">Projeto Demonstrativo do Artigo</span>
+          <span className="text-xs font-mono text-brand-400 font-bold uppercase">Projeto Demonstrativo do Artigo</span>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h4 className="text-lg font-bold font-display text-white">{relatedProject.title}</h4>

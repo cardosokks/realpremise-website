@@ -38,6 +38,17 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
     return () => clearInterval(timer);
   }, [isAutoPlaying, detailModalMember, totalMembers]);
 
+  // Accessibility: Close detail modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && detailModalMember !== null) {
+        setDetailModalMember(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [detailModalMember]);
+
   // Keep active item scrolled into view strictly INSIDE the container without pulling window scroll
   useEffect(() => {
     if (rosterListRef.current && totalMembers > 1) {
@@ -74,32 +85,32 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
     <section 
       id="equipe" 
       aria-label="Conheça nossa equipe"
-      className="relative py-16 sm:py-24 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/60 transition-colors overflow-hidden"
+      className="relative py-14 sm:py-20 border-t border-black/[0.08] dark:border-white/[0.08] bg-[#fcf9fa] dark:bg-[#0f0d0e] transition-colors overflow-hidden"
     >
       {/* Anchor for backward compatibility */}
       <div id="criadores" className="absolute -top-20" />
 
       {/* Subtle ambient light aura */}
-      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-indigo-500/10 dark:bg-indigo-500/5 blur-3xl rounded-full pointer-events-none -z-0" />
+      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#d4789a]/10 blur-3xl rounded-full pointer-events-none -z-0" />
 
-      <div className="relative z-10 max-w-[1600px] mx-auto px-8 sm:px-12 md:px-24 lg:px-32 2xl:px-64 space-y-10">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 2xl:px-24 space-y-10">
         
         {/* Editorial Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-slate-200/80 dark:border-slate-800/80 pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-black/[0.08] dark:border-white/[0.08] pb-8">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800/80 text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-              <Sparkles className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#faebf2] dark:bg-[#1a1318] border border-[#d4789a]/35 text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider text-[#be5980] dark:text-[#e8b0c4]">
+              <Sparkles className="w-4 h-4 text-[#c9a84c] dark:text-[#f0c870]" />
               <span>Corpo Técnico & Arquitetura de Software</span>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#120c10] dark:text-white tracking-tight">
               {totalMembers > 1 ? 'Conheça nossa equipe' : 'Liderança Técnica & Arquitetura'}
             </h2>
 
-            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg text-[#68515e] dark:text-[#b89aa8] max-w-2xl leading-relaxed">
               {totalMembers > 1 
-                ? 'Engenharia de software, design e escalabilidade do ecossistema REALPREMISE.'
-                : 'Engenheiro de software e arquiteto de soluções responsável pela concepção, design de sistemas e escalabilidade do ecossistema REALPREMISE.'}
+                ? 'Engenharia de software, design e escalabilidade do ecossistema REAL PREMISE.'
+                : 'Engenheiro de software e arquiteto de soluções responsável pela concepção, design de sistemas e escalabilidade do ecossistema REAL PREMISE.'}
             </p>
           </div>
 
@@ -153,7 +164,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
               initial={{ width: '0%' }}
               animate={{ width: '100%' }}
               transition={{ duration: autoPlayDuration / 1000, ease: 'linear' }}
-              className="h-full bg-indigo-600 dark:bg-indigo-400"
+              className="h-full bg-brand-600 dark:bg-brand-400"
             />
           </div>
         )}
@@ -183,11 +194,11 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                 {/* Top Badges */}
                 <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10">
                   <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-950/75 backdrop-blur-md border border-white/10 text-white text-xs sm:text-sm font-mono">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-brand-primary-400 animate-pulse" />
                     <span>Perfil Oficial</span>
                   </div>
 
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-600/90 backdrop-blur-md text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-600/90 backdrop-blur-md text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg">
                     <Award className="w-4 h-4" />
                     <span>Liderança Técnica</span>
                   </div>
@@ -198,7 +209,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                   <h3 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-white drop-shadow-md">
                     {selectedMember.name}
                   </h3>
-                  <p className="text-sm sm:text-base font-semibold text-indigo-300 font-mono mt-1">
+                  <p className="text-sm sm:text-base font-semibold text-brand-300 font-mono mt-1">
                     {selectedMember.role}
                   </p>
                 </div>
@@ -206,39 +217,39 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
             </div>
 
             {/* Right: Comprehensive Profile & Competencies Details */}
-            <div className="lg:col-span-7 xl:col-span-7 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-8 sm:p-10 lg:p-12 shadow-xl flex flex-col justify-between space-y-8">
+            <div className="lg:col-span-7 xl:col-span-7 bg-white dark:bg-[#1a1318] border border-black/[0.08] dark:border-white/[0.08] rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl flex flex-col justify-between space-y-8">
               
               <div className="space-y-6">
                 <div>
-                  <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                    <Code2 className="w-4 h-4" />
+                  <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#be5980] dark:text-[#e8b0c4]">
+                    <Code2 className="w-4 h-4 text-[#c9a84c] dark:text-[#f0c870]" />
                     <span>Biografia & Trajetória Técnica</span>
                   </div>
-                  <h3 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white mt-1">
+                  <h3 className="text-3xl sm:text-4xl font-extrabold font-display text-[#120c10] dark:text-white mt-1">
                     {selectedMember.name}
                   </h3>
-                  <p className="text-base sm:text-lg font-mono text-indigo-600 dark:text-indigo-400 mt-1">
+                  <p className="text-base sm:text-lg font-mono text-[#ae8d3c] dark:text-[#f0c870] mt-1 font-semibold">
                     {selectedMember.role}
                   </p>
                 </div>
 
-                <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                <p className="text-base sm:text-lg text-[#68515e] dark:text-[#b89aa8] leading-relaxed font-normal">
                   {selectedMember.bio}
                 </p>
 
                 {/* Tech Stack & Core Competencies */}
                 {selectedMember.skills && selectedMember.skills.length > 0 && (
                   <div className="space-y-3 pt-2">
-                    <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#68515e] dark:text-[#7a6070]">
                       Principais Competências & Stack de Engenharia
                     </h4>
                     <div className="flex flex-wrap gap-2.5">
                       {selectedMember.skills.map((skill, sIdx) => (
                         <span
                           key={sIdx}
-                          className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-mono font-medium text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-2xs flex items-center gap-1.5"
+                          className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-mono font-medium text-[#68515e] dark:text-[#f5eff2] bg-[#f4ecf0] dark:bg-[#241b20] border border-black/[0.06] dark:border-white/[0.08] shadow-xs flex items-center gap-1.5"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#be5980] dark:text-[#e8b0c4]" />
                           <span>{skill}</span>
                         </span>
                       ))}
@@ -248,13 +259,13 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
               </div>
 
               {/* Actions & Verified Links */}
-              <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+              <div className="pt-6 border-t border-black/[0.08] dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
                 
                 {/* Full Profile Modal Trigger */}
                 <button
                   type="button"
                   onClick={() => setDetailModalMember(selectedMember)}
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 text-sm sm:text-base font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-2xl transition-all shadow-xl shadow-indigo-500/25 cursor-pointer group min-h-[48px]"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 text-sm sm:text-base font-bold text-[#0f0d0e] bg-gradient-to-r from-[#e8b0c4] via-[#d4789a] to-[#c9a84c] hover:brightness-110 rounded-2xl transition-all shadow-xl shadow-[#d4789a]/25 cursor-pointer group min-h-[48px]"
                 >
                   <span>Ver perfil e projetos completos</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
@@ -267,7 +278,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                       href={selectedMember.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                      className="p-3 text-[#68515e] dark:text-[#b89aa8] hover:text-[#1c1418] dark:hover:text-white bg-[#f4ecf0] dark:bg-[#241b20] border border-black/[0.06] dark:border-white/[0.08] rounded-2xl hover:border-[#d4789a]/40 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                       title="GitHub Perfil"
                       aria-label={`GitHub de ${selectedMember.name}`}
                     >
@@ -280,7 +291,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                       href={selectedMember.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 text-slate-600 dark:text-slate-300 hover:text-sky-600 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                      className="p-3 text-[#68515e] dark:text-[#b89aa8] hover:text-[#ae8d3c] dark:hover:text-[#f0c870] bg-[#f4ecf0] dark:bg-[#241b20] border border-black/[0.06] dark:border-white/[0.08] rounded-2xl hover:border-[#c9a84c]/40 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                       title="LinkedIn Perfil"
                       aria-label={`LinkedIn de ${selectedMember.name}`}
                     >
@@ -291,7 +302,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                   {selectedMember.email && (
                     <a
                       href={`mailto:${selectedMember.email}`}
-                      className="p-3 text-slate-600 dark:text-slate-300 hover:text-indigo-600 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                      className="p-3 text-[#68515e] dark:text-[#b89aa8] hover:text-[#be5980] dark:hover:text-[#e8b0c4] bg-[#f4ecf0] dark:bg-[#241b20] border border-black/[0.06] dark:border-white/[0.08] rounded-2xl hover:border-[#d4789a]/40 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                       title="Enviar E-mail"
                       aria-label={`E-mail de ${selectedMember.name}`}
                     >
@@ -344,12 +355,12 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                 {/* Top Badges */}
                 <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10">
                   <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/10 text-white text-xs sm:text-sm font-mono">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-brand-primary-400 animate-pulse" />
                     <span>Álbum de Talentos</span>
                   </div>
 
                   {selectedMember.featured && (
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-600/90 backdrop-blur-md text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-600/90 backdrop-blur-md text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg">
                       <Award className="w-4 h-4" />
                       <span>Liderança Técnica</span>
                     </div>
@@ -371,7 +382,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                         <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight drop-shadow-md">
                           {selectedMember.name}
                         </h3>
-                        <p className="text-base sm:text-lg font-semibold text-indigo-300 font-mono mt-1.5">
+                        <p className="text-base sm:text-lg font-semibold text-brand-300 font-mono mt-1.5">
                           {selectedMember.role}
                         </p>
                       </div>
@@ -412,7 +423,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                               href={selectedMember.linkedinUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-3 text-white/90 hover:text-sky-300 bg-slate-950/70 backdrop-blur-md border border-white/15 rounded-2xl hover:bg-white/20 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                              className="p-3 text-white/90 hover:text-brand-secondary-300 bg-slate-950/70 backdrop-blur-md border border-white/15 rounded-2xl hover:bg-white/20 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                               title="LinkedIn Perfil"
                               aria-label={`LinkedIn de ${selectedMember.name}`}
                             >
@@ -423,7 +434,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                           {selectedMember.email && (
                             <a
                               href={`mailto:${selectedMember.email}`}
-                              className="p-3 text-white/90 hover:text-indigo-300 bg-slate-950/70 backdrop-blur-md border border-white/15 rounded-2xl hover:bg-white/20 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                              className="p-3 text-white/90 hover:text-brand-300 bg-slate-950/70 backdrop-blur-md border border-white/15 rounded-2xl hover:bg-white/20 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                               title="E-mail"
                               aria-label={`E-mail de ${selectedMember.name}`}
                             >
@@ -465,14 +476,14 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                         onClick={() => setSelectedIndex(index)}
                         className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between gap-4 group cursor-pointer min-h-[64px] ${
                           isSelected
-                            ? 'bg-slate-900 text-white dark:bg-indigo-600 dark:text-white border-transparent shadow-lg scale-[1.01]'
+                            ? 'bg-slate-900 text-white dark:bg-brand-600 dark:text-white border-transparent shadow-lg scale-[1.01]'
                             : 'bg-white dark:bg-slate-900 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-800 dark:text-slate-200'
                         }`}
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
                           {/* Number Index */}
                           <span className={`text-xs font-mono font-bold w-6 shrink-0 text-center ${
-                            isSelected ? 'text-indigo-300 dark:text-indigo-200' : 'text-slate-400 dark:text-slate-500'
+                            isSelected ? 'text-brand-300 dark:text-brand-200' : 'text-slate-400 dark:text-slate-500'
                           }`}>
                             {String(index + 1).padStart(2, '0')}
                           </span>
@@ -494,12 +505,12 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
 
                           <div className="min-w-0">
                             <h4 className={`text-sm sm:text-base font-bold truncate ${
-                              isSelected ? 'text-white' : 'text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
+                              isSelected ? 'text-white' : 'text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400'
                             }`}>
                               {member.name}
                             </h4>
                             <p className={`text-xs sm:text-sm truncate font-mono mt-0.5 ${
-                              isSelected ? 'text-indigo-200 dark:text-indigo-100' : 'text-slate-500 dark:text-slate-400'
+                              isSelected ? 'text-brand-200 dark:text-brand-100' : 'text-slate-500 dark:text-slate-400'
                             }`}>
                               {member.role}
                             </p>
@@ -526,31 +537,31 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
       {/* RICH TEAM MEMBER PROFILE MODAL ("VER PERFIL COMPLETO") */}
       <AnimatePresence>
         {detailModalMember && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xs overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#0f0d0e]/85 backdrop-blur-md overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ duration: 0.25 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-8 max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-2xl bg-[#1a1318] border border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden my-6 sm:my-8 max-h-[92vh] flex flex-col"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-member-name"
             >
               {/* Modal Header Cover */}
-              <div className="relative h-48 sm:h-56 bg-gradient-to-r from-indigo-900 via-slate-900 to-slate-950 overflow-hidden shrink-0">
+              <div className="relative h-44 sm:h-52 bg-gradient-to-r from-[#1a1318] via-[#241b20] to-[#0f0d0e] overflow-hidden shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
                 <img
                   src={detailModalMember.avatarUrl}
                   alt={detailModalMember.name}
-                  className="w-full h-full object-cover object-center filter blur-xs scale-110 opacity-40"
+                  className="w-full h-full object-cover object-center filter blur-xs scale-110 opacity-30"
                 />
 
                 {/* Close Button */}
                 <button
                   type="button"
                   onClick={() => setDetailModalMember(null)}
-                  className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-slate-950/60 hover:bg-slate-950 text-white/80 hover:text-white transition-colors cursor-pointer"
+                  className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-[#0f0d0e]/80 hover:bg-[#0f0d0e] text-white transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                   aria-label="Fechar modal de perfil"
                 >
                   <X className="w-5 h-5" />
@@ -558,7 +569,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
 
                 {/* Avatar Badge on Cover */}
                 <div className="absolute -bottom-10 left-6 sm:left-8 z-20 flex items-end gap-4">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-4 border-white dark:border-slate-900 shadow-2xl bg-slate-800 shrink-0">
+                  <div className="w-22 h-22 sm:w-26 sm:h-26 rounded-2xl overflow-hidden border-4 border-[#1a1318] shadow-2xl bg-[#241b20] shrink-0">
                     <img
                       src={detailModalMember.avatarUrl}
                       alt={detailModalMember.name}
@@ -572,26 +583,26 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
               <div className="p-6 sm:p-8 pt-14 space-y-6 overflow-y-auto flex-1">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 id="modal-member-name" className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">
+                    <h3 id="modal-member-name" className="text-2xl sm:text-3xl font-extrabold font-display text-white">
                       {detailModalMember.name}
                     </h3>
                     {detailModalMember.featured && (
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold font-mono bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold font-mono bg-[#241b20] text-[#e8b0c4] border border-[#d4789a]/35">
                         Lead Architect
                       </span>
                     )}
                   </div>
-                  <p className="text-sm sm:text-base font-semibold text-indigo-600 dark:text-indigo-400 font-mono mt-1">
+                  <p className="text-sm sm:text-base font-semibold text-[#f0c870] font-mono mt-1">
                     {detailModalMember.role}
                   </p>
                 </div>
 
                 {/* Biography */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#7a6070] font-mono">
                     Sobre & Trajetória
                   </h4>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-sm sm:text-base text-[#b89aa8] leading-relaxed">
                     {detailModalMember.bio}
                   </p>
                 </div>
@@ -599,14 +610,14 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                 {/* Skills */}
                 {detailModalMember.skills && detailModalMember.skills.length > 0 && (
                   <div className="space-y-2.5">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#7a6070] font-mono">
                       Competências & Tecnologias
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {detailModalMember.skills.map((skill, sIdx) => (
                         <span
                           key={sIdx}
-                          className="px-3 py-1 rounded-xl text-xs font-mono font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                          className="px-3 py-1 rounded-xl text-xs font-mono font-medium text-[#f5eff2] bg-[#241b20] border border-white/[0.08]"
                         >
                           {skill}
                         </span>
@@ -616,14 +627,14 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                 )}
 
                 {/* Channels / Socials */}
-                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                <div className="pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     {detailModalMember.githubUrl && (
                       <a
                         href={detailModalMember.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-xs font-bold"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#241b20] text-[#f5eff2] hover:text-white border border-white/[0.08] hover:border-[#d4789a]/40 transition-colors text-xs font-bold min-h-[44px]"
                       >
                         <Github className="w-4 h-4" />
                         <span>GitHub</span>
@@ -635,7 +646,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                         href={detailModalMember.linkedinUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-50 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900/60 transition-colors text-xs font-bold"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#241b20] text-[#f0c870] hover:text-[#f0c870] border border-white/[0.08] hover:border-[#c9a84c]/40 transition-colors text-xs font-bold min-h-[44px]"
                       >
                         <Linkedin className="w-4 h-4" />
                         <span>LinkedIn</span>
@@ -645,7 +656,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                     {detailModalMember.email && (
                       <a
                         href={`mailto:${detailModalMember.email}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-colors text-xs font-bold"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#241b20] text-[#e8b0c4] hover:text-white border border-white/[0.08] hover:border-[#d4789a]/40 transition-colors text-xs font-bold min-h-[44px]"
                       >
                         <Mail className="w-4 h-4" />
                         <span>E-mail</span>
@@ -656,7 +667,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ teamMembers }) => {
                   <button
                     type="button"
                     onClick={() => setDetailModalMember(null)}
-                    className="px-5 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    className="px-5 py-2 text-xs font-bold text-[#b89aa8] hover:text-white min-h-[44px] cursor-pointer"
                   >
                     Fechar
                   </button>

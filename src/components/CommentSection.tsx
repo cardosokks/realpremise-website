@@ -73,7 +73,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
         <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-indigo-500" />
+          <MessageSquare className="w-5 h-5 text-brand-500" />
           <span>Comentários ({filteredComments.length})</span>
         </h3>
         <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
@@ -88,8 +88,8 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
         </h4>
 
         {successMsg && (
-          <div className="p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs rounded-lg flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+          <div className="p-3 bg-brand-primary-50 dark:bg-brand-primary-950/60 border border-brand-primary-200 dark:border-brand-primary-800 text-brand-primary-800 dark:text-brand-primary-200 text-xs rounded-lg flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-brand-primary-500 shrink-0" />
             <span>{successMsg}</span>
           </div>
         )}
@@ -112,7 +112,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
               placeholder="Ex: Ana Maria"
-              className="w-full px-3 py-2 text-xs sm:text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-xs sm:text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
               value={authorEmail}
               onChange={(e) => setAuthorEmail(e.target.value)}
               placeholder="seu.email@dominio.com"
-              className="w-full px-3 py-2 text-xs sm:text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-xs sm:text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500"
             />
           </div>
         </div>
@@ -140,7 +140,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Escreva sua dúvida, feedback técnico ou sugestão..."
-            className="w-full px-3 py-2 text-xs sm:text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 text-xs sm:text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500"
           />
         </div>
 
@@ -148,7 +148,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-lg transition-colors disabled:opacity-50"
           >
             <Send className="w-3.5 h-3.5" />
             <span>{submitting ? 'Enviando...' : 'Publicar Comentário'}</span>
@@ -224,7 +224,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
                   {!comm.approved && (
                     <button
                       onClick={() => onApproveComment(comm.id)}
-                      className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 hover:underline font-medium"
+                      className="flex items-center gap-1 text-brand-primary-600 dark:text-brand-primary-400 hover:underline font-medium"
                     >
                       <UserCheck className="w-3.5 h-3.5" />
                       <span>Aprovar</span>

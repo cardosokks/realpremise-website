@@ -36,7 +36,7 @@ const PartnerLogoItem: React.FC<{ partner: Partner }> = ({ partner }) => {
         href={partner.websiteUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg shrink-0"
+        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg shrink-0"
         aria-label={`Visitar site de ${partner.name}`}
       >
         {content}
@@ -62,8 +62,8 @@ export const PartnersTicker: React.FC<PartnersTickerProps> = ({ partners, classN
       className={`relative w-full overflow-hidden flex items-center py-2.5 sm:py-3.5 ${className}`}
     >
       {/* Vignette Gradient Masks (Left & Right fade) */}
-      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-white dark:from-slate-950 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-white dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-[#fcf9fa] dark:from-[#0f0d0e] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-[#fcf9fa] dark:from-[#0f0d0e] to-transparent z-10 pointer-events-none" />
 
       {/* Infinite Left-Scrolling Marquee Track */}
       <div className="overflow-hidden w-full relative flex items-center">

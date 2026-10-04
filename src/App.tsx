@@ -42,7 +42,7 @@ export default function App() {
   const [theme, setTheme] = useState<ThemeMode>(() => {
     const saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'dark';
   });
 
   // Auth & Data state
@@ -104,10 +104,17 @@ export default function App() {
     const root = document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');
+      root.style.colorScheme = 'dark';
     } else {
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
     }
     localStorage.setItem('theme', theme);
+
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#0f0d0e' : '#fcf9fa');
+    }
   }, [theme]);
 
   const toggleTheme = () => {
@@ -302,8 +309,21 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors">
+    <div className="min-h-screen flex flex-col bg-[#fcf9fa] dark:bg-[#0f0d0e] text-[#1c1418] dark:text-[#f5eff2] transition-colors duration-200 relative selection:bg-[#d4789a] selection:text-white">
       
+      {/* Skip to Main Content Link for WCAG 2.1 AA Keyboard Navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#d4789a] focus:text-[#0f0d0e] focus:font-bold focus:rounded-xl focus:shadow-2xl focus:ring-2 focus:ring-white focus:outline-none"
+      >
+        Pular para o conteúdo principal
+      </a>
+
+      {/* Dynamic Screen Reader Announcement */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {activeSection === 'projetos' ? 'Seção de Projetos ativa' : activeSection === 'blog' ? 'Seção de Artigos e Tech Journal ativa' : 'Seção da Equipe ativa'}
+      </div>
+
       {/* Top Navigation */}
       <Header
         currentUser={currentUser}
@@ -327,8 +347,17 @@ export default function App() {
         />
       )}
 
-      {/* Main Content Area with Fluid Responsive Width for Desktop & Mobile */}
-      <main id="main-content" className="flex-1 w-full max-w-[1600px] mx-auto px-8 sm:px-12 md:px-24 lg:px-32 2xl:px-64 py-10 sm:py-14 space-y-12 sm:space-y-16">
+      {/* Partners Section */}
+      {activeSection === 'projetos' && partners && partners.length > 0 && (
+        <div className="bg-[#fcf9fa] dark:bg-[#0f0d0e] py-6 sm:py-8 border-b border-black/[0.06] dark:border-white/[0.08] transition-colors">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 2xl:px-24">
+             <PartnersTicker partners={partners} />
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area with Fluid Responsive Width for Mobile Android, Tablet & Desktop */}
+      <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 2xl:px-24 py-8 sm:py-12 space-y-10 sm:space-y-14 outline-none">
         
         {/* NOT FOUND ROUTE */}
         {activeSection === 'notfound' && <NotFound onNavigate={handleNavigate} />}
@@ -371,7 +400,7 @@ export default function App() {
                 </p>
                 <button
                   onClick={() => { setSearchQuery(''); setSelectedCategory('Todos'); }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/80 rounded-xl font-bold cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/80 rounded-xl font-bold cursor-pointer hover:bg-brand-100 dark:hover:bg-brand-900/60 transition-colors"
                 >
                   Limpar filtros de busca
                 </button>
@@ -419,7 +448,7 @@ export default function App() {
                             onClick={() => handleProjectPageChange(pageNum)}
                             className={`w-8 h-8 text-xs font-bold font-mono rounded-xl transition-all cursor-pointer flex items-center justify-center ${
                               currentProjectPage === pageNum
-                                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/30'
+                                ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/30'
                                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                             }`}
                           >

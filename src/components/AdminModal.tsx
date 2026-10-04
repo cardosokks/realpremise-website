@@ -44,7 +44,7 @@ const AdminPartnerCardItem: React.FC<{
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between gap-3 shadow-xs hover:border-indigo-500/40 dark:hover:border-indigo-500/40 transition-all">
+    <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between gap-3 shadow-xs hover:border-brand-500/40 dark:hover:border-brand-500/40 transition-all">
       <div className="flex items-center gap-3.5 min-w-0">
         <div className="w-12 h-12 rounded-xl p-1 bg-white border border-slate-200 shadow-xs flex items-center justify-center shrink-0 overflow-hidden">
           {!imgError && partner.logoUrl ? (
@@ -56,7 +56,7 @@ const AdminPartnerCardItem: React.FC<{
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full rounded-lg bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">
+            <div className="w-full h-full rounded-lg bg-brand-600 text-white font-bold text-xs flex items-center justify-center">
               {partner.name.slice(0, 2).toUpperCase()}
             </div>
           )}
@@ -70,7 +70,7 @@ const AdminPartnerCardItem: React.FC<{
             <span
               className={`px-2 py-0.5 text-[10px] font-semibold rounded-full ${
                 partner.active !== false
-                  ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+                  ? 'bg-brand-primary-50 dark:bg-brand-primary-950/80 text-brand-primary-600 dark:text-brand-primary-400 border border-brand-primary-200 dark:border-brand-primary-800'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700'
               }`}
             >
@@ -83,7 +83,7 @@ const AdminPartnerCardItem: React.FC<{
               href={partner.websiteUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 mt-0.5 truncate"
+              className="text-xs text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1 mt-0.5 truncate"
             >
               <span className="truncate">{partner.websiteUrl.replace(/^https?:\/\//, '')}</span>
               <ExternalLink className="w-3 h-3 shrink-0" />
@@ -98,7 +98,7 @@ const AdminPartnerCardItem: React.FC<{
         <button
           type="button"
           onClick={() => onEdit(partner)}
-          className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-2 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           title="Editar parceiro"
         >
           <Edit3 className="w-4 h-4" />
@@ -123,7 +123,7 @@ const AdminTeamMemberItem: React.FC<{
   onDelete: (id: string, name: string) => void;
 }> = ({ member, onEdit, onDelete }) => {
   return (
-    <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs hover:border-indigo-500/40 dark:hover:border-indigo-500/40 transition-all">
+    <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs hover:border-brand-500/40 dark:hover:border-brand-500/40 transition-all">
       <div className="flex items-center gap-3.5 min-w-0">
         <div className="relative w-14 h-14 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0">
           <img
@@ -136,7 +136,7 @@ const AdminTeamMemberItem: React.FC<{
             }}
           />
           {member.featured && (
-            <div className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-indigo-500 ring-2 ring-white dark:ring-slate-900" title="Destaque" />
+            <div className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-brand-500 ring-2 ring-white dark:ring-slate-900" title="Destaque" />
           )}
         </div>
 
@@ -148,20 +148,20 @@ const AdminTeamMemberItem: React.FC<{
             <span
               className={`px-2 py-0.5 text-[10px] font-semibold rounded-full ${
                 member.active !== false
-                  ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+                  ? 'bg-brand-primary-50 dark:bg-brand-primary-950/80 text-brand-primary-600 dark:text-brand-primary-400 border border-brand-primary-200 dark:border-brand-primary-800'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700'
               }`}
             >
               {member.active !== false ? 'Visível na Equipe' : 'Oculto'}
             </span>
             {member.featured && (
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800">
                 Lead
               </span>
             )}
           </div>
 
-          <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 font-mono truncate">
+          <p className="text-xs font-semibold text-brand-600 dark:text-brand-400 font-mono truncate">
             {member.role}
           </p>
 
@@ -184,7 +184,7 @@ const AdminTeamMemberItem: React.FC<{
         <button
           type="button"
           onClick={() => onEdit(member)}
-          className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-2 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           title="Editar membro"
         >
           <Edit3 className="w-4 h-4" />
@@ -979,14 +979,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         <div>
           <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+              <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
                 <SlidersHorizontal className="w-5 h-5" />
               </div>
               <div>
                 <h2 className="text-base font-extrabold font-display text-slate-900 dark:text-white leading-tight">
                   REALPREMISE
                 </h2>
-                <span className="text-[11px] font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
+                <span className="text-[11px] font-mono text-brand-600 dark:text-brand-400 font-semibold">
                   Painel de Controle CMS
                 </span>
               </div>
@@ -1016,7 +1016,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   }}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                      ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
@@ -1028,7 +1028,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <div className="flex items-center gap-1.5 shrink-0">
                     {item.badge && (
                       <span className={`px-1.5 py-0.5 text-[9px] font-bold rounded uppercase ${
-                        isActive ? 'bg-white/20 text-white' : 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400'
+                        isActive ? 'bg-white/20 text-white' : 'bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400'
                       }`}>
                         {item.badge}
                       </span>
@@ -1059,13 +1059,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             onClick={onClose}
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-2xs"
           >
-            <Globe className="w-4 h-4 text-indigo-500" />
+            <Globe className="w-4 h-4 text-brand-500" />
             <span>Voltar ao Site ao Vivo</span>
           </button>
 
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-indigo-100 dark:bg-indigo-950 shrink-0">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-brand-100 dark:bg-brand-950 shrink-0">
                 <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
               </div>
               <div className="min-w-0">
@@ -1114,7 +1114,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             <button
               type="button"
               onClick={onRefreshData}
-              className="p-2 text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
+              className="p-2 text-slate-500 hover:text-brand-600 dark:hover:text-brand-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
               title="Atualizar dados"
             >
               <RefreshCw className="w-4 h-4" />
@@ -1143,7 +1143,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Projetos Publicados</span>
-                    <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">
+                    <div className="p-2 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400">
                       <Layers className="w-4 h-4" />
                     </div>
                   </div>
@@ -1153,7 +1153,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenProjectForm()}
-                    className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center gap-1 pt-1"
+                    className="text-xs text-brand-600 dark:text-brand-400 font-semibold hover:underline flex items-center gap-1 pt-1"
                   >
                     <span>+ Novo Projeto</span>
                   </button>
@@ -1162,7 +1162,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Artigos no Blog</span>
-                    <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400">
+                    <div className="p-2 rounded-xl bg-brand-secondary-50 dark:bg-brand-secondary-950 text-brand-secondary-600 dark:text-brand-secondary-400">
                       <BookOpen className="w-4 h-4" />
                     </div>
                   </div>
@@ -1172,7 +1172,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenBlogForm()}
-                    className="text-xs text-sky-600 dark:text-sky-400 font-semibold hover:underline flex items-center gap-1 pt-1"
+                    className="text-xs text-brand-secondary-600 dark:text-brand-secondary-400 font-semibold hover:underline flex items-center gap-1 pt-1"
                   >
                     <span>+ Novo Artigo</span>
                   </button>
@@ -1181,7 +1181,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Membros da Equipe</span>
-                    <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400">
+                    <div className="p-2 rounded-xl bg-brand-primary-50 dark:bg-brand-primary-950 text-brand-primary-600 dark:text-brand-primary-400">
                       <Users className="w-4 h-4" />
                     </div>
                   </div>
@@ -1191,7 +1191,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenMemberForm()}
-                    className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 pt-1"
+                    className="text-xs text-brand-primary-600 dark:text-brand-primary-400 font-semibold hover:underline flex items-center gap-1 pt-1"
                   >
                     <span>+ Adicionar Membro</span>
                   </button>
@@ -1226,9 +1226,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenProjectForm()}
-                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/20 transition-all text-left group cursor-pointer"
+                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-brand-500 hover:bg-brand-50/30 dark:hover:bg-brand-950/20 transition-all text-left group cursor-pointer"
                   >
-                    <Plus className="w-5 h-5 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
+                    <Plus className="w-5 h-5 text-brand-600 mb-2 group-hover:scale-110 transition-transform" />
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white">Cadastrar Projeto</h4>
                     <p className="text-[11px] text-slate-400">Adicione novas soluções e capturas</p>
                   </button>
@@ -1236,9 +1236,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenBlogForm()}
-                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-sky-500 hover:bg-sky-50/30 dark:hover:bg-sky-950/20 transition-all text-left group cursor-pointer"
+                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-brand-secondary-500 hover:bg-brand-secondary-50/30 dark:hover:bg-brand-secondary-950/20 transition-all text-left group cursor-pointer"
                   >
-                    <Sparkles className="w-5 h-5 text-sky-600 mb-2 group-hover:scale-110 transition-transform" />
+                    <Sparkles className="w-5 h-5 text-brand-secondary-600 mb-2 group-hover:scale-110 transition-transform" />
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white">Artigo com IA</h4>
                     <p className="text-[11px] text-slate-400">Gere conteúdo técnico automático</p>
                   </button>
@@ -1246,9 +1246,9 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenMemberForm()}
-                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/20 transition-all text-left group cursor-pointer"
+                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-brand-primary-500 hover:bg-brand-primary-50/30 dark:hover:bg-brand-primary-950/20 transition-all text-left group cursor-pointer"
                   >
-                    <Users className="w-5 h-5 text-emerald-600 mb-2 group-hover:scale-110 transition-transform" />
+                    <Users className="w-5 h-5 text-brand-primary-600 mb-2 group-hover:scale-110 transition-transform" />
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white">Novo Membro da Equipe</h4>
                     <p className="text-[11px] text-slate-400">Cadastre fotos, cargos e redes</p>
                   </button>
@@ -1279,7 +1279,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenProjectForm()}
-                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Novo Projeto</span>
@@ -1290,7 +1290,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 {projects.map((proj) => (
                   <div
                     key={proj.id}
-                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col justify-between gap-3 shadow-xs hover:border-indigo-500/40 transition-all"
+                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col justify-between gap-3 shadow-xs hover:border-brand-500/40 transition-all"
                   >
                     <div className="space-y-2">
                       <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -1304,7 +1304,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
-                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center gap-1">
+                      <a href={proj.liveUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-brand-600 dark:text-brand-400 font-semibold hover:underline flex items-center gap-1">
                         <span>Ver Demo</span>
                         <ExternalLink className="w-3 h-3" />
                       </a>
@@ -1313,7 +1313,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         <button
                           type="button"
                           onClick={() => handleOpenProjectForm(proj)}
-                          className="p-1.5 text-slate-400 hover:text-indigo-600 rounded-lg"
+                          className="p-1.5 text-slate-400 hover:text-brand-600 rounded-lg"
                         >
                           <Edit3 className="w-4 h-4" />
                         </button>
@@ -1343,7 +1343,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenBlogForm()}
-                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Novo Artigo</span>
@@ -1354,12 +1354,12 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 {blogPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col justify-between gap-3 shadow-xs hover:border-indigo-500/40 transition-all"
+                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col justify-between gap-3 shadow-xs hover:border-brand-500/40 transition-all"
                   >
                     <div className="space-y-2">
                       <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                         <img src={post.coverUrl} alt={post.title} className="w-full h-full object-cover" />
-                        <span className="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold rounded bg-indigo-600 text-white">
+                        <span className="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold rounded bg-brand-600 text-white">
                           {post.category}
                         </span>
                       </div>
@@ -1374,7 +1374,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         <button
                           type="button"
                           onClick={() => handleOpenBlogForm(post)}
-                          className="p-1.5 text-slate-400 hover:text-indigo-600 rounded-lg"
+                          className="p-1.5 text-slate-400 hover:text-brand-600 rounded-lg"
                         >
                           <Edit3 className="w-4 h-4" />
                         </button>
@@ -1398,7 +1398,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             <div className="space-y-6 max-w-7xl mx-auto">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 mb-1">
+                  <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-brand-600 dark:text-brand-400 mb-1">
                     <Bot className="w-4 h-4" />
                     <span>AUTONOMOUS AGENTS & NEWS SCHEDULER</span>
                   </div>
@@ -1412,7 +1412,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenTaskForm()}
-                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2 cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2 cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Nova Tarefa Autônoma</span>
@@ -1424,18 +1424,18 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-400">Tarefas Ativas</span>
-                    <Bot className="w-4 h-4 text-indigo-500" />
+                    <Bot className="w-4 h-4 text-brand-500" />
                   </div>
                   <div className="text-2xl font-bold font-display text-slate-900 dark:text-white mt-1">
                     {autonomousTasks.filter(t => t.enabled).length} de {autonomousTasks.length}
                   </div>
-                  <p className="text-[11px] text-emerald-500 font-mono mt-0.5">Executando em segundo plano</p>
+                  <p className="text-[11px] text-brand-primary-500 font-mono mt-0.5">Executando em segundo plano</p>
                 </div>
 
                 <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-400">Artigos Publicados pela IA</span>
-                    <Sparkles className="w-4 h-4 text-sky-500" />
+                    <Sparkles className="w-4 h-4 text-brand-secondary-500" />
                   </div>
                   <div className="text-2xl font-bold font-display text-slate-900 dark:text-white mt-1">
                     {autonomousTasks.reduce((acc, t) => acc + (t.articlesGeneratedCount || 0), 0)}
@@ -1446,12 +1446,12 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-400">Motor de Notícias & Qualidade</span>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <CheckCircle2 className="w-4 h-4 text-brand-primary-500" />
                   </div>
                   <div className="text-sm font-bold text-slate-900 dark:text-white mt-1">
                     Crawler Web + Julgador IA
                   </div>
-                  <p className="text-[11px] text-indigo-500 font-mono mt-0.5">Google News, Dev.to & Imagen</p>
+                  <p className="text-[11px] text-brand-500 font-mono mt-0.5">Google News, Dev.to & Imagen</p>
                 </div>
               </div>
 
@@ -1466,25 +1466,25 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   autonomousTasks.map((task) => (
                     <div
                       key={task.id}
-                      className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs hover:border-indigo-500/40 transition-all"
+                      className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs hover:border-brand-500/40 transition-all"
                     >
                       <div className="space-y-1.5 flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                           <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                             {task.name}
                           </h4>
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800">
                             {task.category}
                           </span>
                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                             task.enabled
-                              ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+                              ? 'bg-brand-primary-50 dark:bg-brand-primary-950 text-brand-primary-600 dark:text-brand-primary-400 border border-brand-primary-200 dark:border-brand-primary-800'
                               : 'bg-slate-100 dark:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700'
                           }`}>
                             {task.enabled ? 'Ativa' : 'Pausada'}
                           </span>
                           {task.autoPublish && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-secondary-50 dark:bg-brand-secondary-950 text-brand-secondary-600 dark:text-brand-secondary-400 border border-brand-secondary-200 dark:border-brand-secondary-800">
                               Auto-Publicar
                             </span>
                           )}
@@ -1502,13 +1502,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
                         <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-400 font-mono pt-1">
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 text-indigo-500" />
+                            <Clock className="w-3.5 h-3.5 text-brand-500" />
                             <span>Intervalo: A cada {task.scheduleIntervalHours}h</span>
                           </span>
 
                           {task.targetHour !== undefined && (
                             <span className="flex items-center gap-1">
-                              <Calendar className="w-3.5 h-3.5 text-indigo-500" />
+                              <Calendar className="w-3.5 h-3.5 text-brand-500" />
                               <span>Horário preferencial: {String(task.targetHour).padStart(2, '0')}:00</span>
                             </span>
                           )}
@@ -1558,13 +1558,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                           className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
                           title={task.enabled ? "Pausar tarefa" : "Ativar tarefa"}
                         >
-                          {task.enabled ? <CheckCircle className="w-4 h-4 text-emerald-500" /> : <X className="w-4 h-4 text-slate-400" />}
+                          {task.enabled ? <CheckCircle className="w-4 h-4 text-brand-primary-500" /> : <X className="w-4 h-4 text-slate-400" />}
                         </button>
 
                         <button
                           type="button"
                           onClick={() => handleOpenTaskForm(task)}
-                          className="p-2 text-slate-400 hover:text-indigo-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
+                          className="p-2 text-slate-400 hover:text-brand-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
                           title="Editar tarefa"
                         >
                           <Edit3 className="w-4 h-4" />
@@ -1597,7 +1597,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenMemberForm()}
-                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Adicionar Membro</span>
@@ -1628,7 +1628,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenPartnerForm()}
-                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Adicionar Empresa</span>
@@ -1669,7 +1669,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         onClick={() => setSelectedChatSession(session)}
                         className={`w-full text-left p-3.5 rounded-xl border transition-all ${
                           selectedChatSession?.id === session.id
-                            ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-500'
+                            ? 'bg-brand-50 dark:bg-brand-950/60 border-brand-500'
                             : 'bg-slate-50/60 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 hover:border-slate-300'
                         }`}
                       >
@@ -1713,7 +1713,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                           >
                             <div className={`max-w-xs sm:max-w-md px-3.5 py-2.5 rounded-2xl text-xs ${
                               msg.sender === 'admin'
-                                ? 'bg-indigo-600 text-white rounded-br-none'
+                                ? 'bg-brand-600 text-white rounded-br-none'
                                 : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-none'
                             }`}>
                               {msg.text}
@@ -1733,7 +1733,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         />
                         <button
                           type="submit"
-                          className="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-500"
+                          className="px-4 py-2 bg-brand-600 text-white text-xs font-bold rounded-xl hover:bg-brand-500"
                         >
                           Enviar
                         </button>
@@ -1810,7 +1810,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     link.click();
                     document.body.removeChild(link);
                   }}
-                  className="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  className="px-4 py-2 bg-brand-600 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Exportar CSV</span>
@@ -1835,7 +1835,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                         <td className="p-3.5 font-mono">{sub.email}</td>
                         <td className="p-3.5 text-slate-400">{sub.subscribedAt}</td>
                         <td className="p-3.5">
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-primary-50 text-brand-primary-600 dark:bg-brand-primary-950 dark:text-brand-primary-400">
                             Ativo
                           </span>
                         </td>
@@ -1866,7 +1866,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
               </div>
 
               {profMsg && (
-                <div className="p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 text-emerald-600 text-xs rounded-xl font-semibold">
+                <div className="p-3 bg-brand-primary-50 dark:bg-brand-primary-950/60 border border-brand-primary-200 text-brand-primary-600 text-xs rounded-xl font-semibold">
                   {profMsg}
                 </div>
               )}
@@ -1905,7 +1905,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+                  className="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
                 >
                   Salvar Alterações
                 </button>
@@ -1923,7 +1923,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-6 space-y-5 my-8 shadow-2xl animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600">
+                <div className="p-2 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600">
                   <Users className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-bold font-display text-slate-900 dark:text-white">
@@ -1971,7 +1971,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                       type="button"
                       onClick={() => setMemberUploadType('file')}
                       className={`px-2.5 py-1 rounded-md transition-all ${
-                        memberUploadType === 'file' ? 'bg-white dark:bg-slate-900 shadow-2xs text-indigo-600' : 'text-slate-500'
+                        memberUploadType === 'file' ? 'bg-white dark:bg-slate-900 shadow-2xs text-brand-600' : 'text-slate-500'
                       }`}
                     >
                       Upload Arquivo
@@ -1980,7 +1980,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                       type="button"
                       onClick={() => setMemberUploadType('link')}
                       className={`px-2.5 py-1 rounded-md transition-all ${
-                        memberUploadType === 'link' ? 'bg-white dark:bg-slate-900 shadow-2xs text-indigo-600' : 'text-slate-500'
+                        memberUploadType === 'link' ? 'bg-white dark:bg-slate-900 shadow-2xs text-brand-600' : 'text-slate-500'
                       }`}
                     >
                       Link / URL
@@ -1993,7 +1993,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleFileUpload(e, setMemberAvatarUrl)}
-                    className="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+                    className="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100"
                   />
                 ) : (
                   <input
@@ -2010,7 +2010,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
                       <img src={memberAvatarUrl} alt="Preview" className="w-full h-full object-cover" />
                     </div>
-                    <span className="text-[11px] text-emerald-600 font-semibold">Foto carregada com sucesso</span>
+                    <span className="text-[11px] text-brand-primary-600 font-semibold">Foto carregada com sucesso</span>
                   </div>
                 )}
               </div>
@@ -2087,7 +2087,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     type="checkbox"
                     checked={memberFeatured}
                     onChange={(e) => setMemberFeatured(e.target.checked)}
-                    className="rounded text-indigo-600 focus:ring-indigo-500"
+                    className="rounded text-brand-600 focus:ring-brand-500"
                   />
                   <span>Membro Destaque (Lead Badge)</span>
                 </label>
@@ -2097,7 +2097,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     type="checkbox"
                     checked={memberActive}
                     onChange={(e) => setMemberActive(e.target.checked)}
-                    className="rounded text-indigo-600 focus:ring-indigo-500"
+                    className="rounded text-brand-600 focus:ring-brand-500"
                   />
                   <span>Ativo no Site</span>
                 </label>
@@ -2113,7 +2113,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-md shadow-indigo-500/20"
+                  className="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl shadow-md shadow-brand-500/20"
                 >
                   Salvar Membro
                 </button>
@@ -2202,7 +2202,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     <div className="w-12 h-12 rounded-xl p-1.5 bg-white border border-slate-200 flex items-center justify-center shrink-0">
                       <img src={partnerLogoUrl} alt="Preview" className="w-full h-full object-contain" />
                     </div>
-                    <span className="text-[11px] text-emerald-600 font-semibold">Logo pronta para o ticker</span>
+                    <span className="text-[11px] text-brand-primary-600 font-semibold">Logo pronta para o ticker</span>
                   </div>
                 )}
               </div>
@@ -2342,14 +2342,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setProjectUploadType('file')}
-                      className={`px-2 py-0.5 rounded ${projectUploadType === 'file' ? 'bg-white text-indigo-600' : 'text-slate-500'}`}
+                      className={`px-2 py-0.5 rounded ${projectUploadType === 'file' ? 'bg-white text-brand-600' : 'text-slate-500'}`}
                     >
                       Arquivo
                     </button>
                     <button
                       type="button"
                       onClick={() => setProjectUploadType('link')}
-                      className={`px-2 py-0.5 rounded ${projectUploadType === 'link' ? 'bg-white text-indigo-600' : 'text-slate-500'}`}
+                      className={`px-2 py-0.5 rounded ${projectUploadType === 'link' ? 'bg-white text-brand-600' : 'text-slate-500'}`}
                     >
                       Link
                     </button>
@@ -2389,7 +2389,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   type="checkbox"
                   checked={projectFeatured}
                   onChange={(e) => setProjectFeatured(e.target.checked)}
-                  className="rounded text-indigo-600 focus:ring-indigo-500"
+                  className="rounded text-brand-600 focus:ring-brand-500"
                 />
                 <span>Projeto em Destaque no topo</span>
               </label>
@@ -2398,7 +2398,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button type="button" onClick={() => setProjectModalOpen(false)} className="px-4 py-2 text-xs font-bold text-slate-500">
                   Cancelar
                 </button>
-                <button type="submit" className="px-6 py-2.5 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs">
+                <button type="submit" className="px-6 py-2.5 bg-brand-600 text-white text-xs font-bold rounded-xl shadow-xs">
                   Salvar Projeto
                 </button>
               </div>
@@ -2421,8 +2421,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
             </div>
 
             {/* AI Assistant Generator Bar */}
-            <div className="p-3.5 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 rounded-2xl space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700 dark:text-indigo-300">
+            <div className="p-3.5 bg-brand-50 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800 rounded-2xl space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-brand-700 dark:text-brand-300">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Gerador de Rascunho com IA (Gemini)</span>
               </div>
@@ -2432,13 +2432,13 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   value={aiPromptTopic}
                   onChange={(e) => setAiPromptTopic(e.target.value)}
                   placeholder="Ex: Como otimizar queries no PostgreSQL com índices compostos"
-                  className="flex-1 px-3 py-2 text-xs bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 rounded-xl"
+                  className="flex-1 px-3 py-2 text-xs bg-white dark:bg-slate-900 border border-brand-200 dark:border-brand-800 rounded-xl"
                 />
                 <button
                   type="button"
                   disabled={aiGenerating}
                   onClick={handleGenerateAiPost}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl disabled:opacity-50"
+                  className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl disabled:opacity-50"
                 >
                   {aiGenerating ? 'Gerando...' : 'Gerar'}
                 </button>
@@ -2504,7 +2504,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 <button type="button" onClick={() => setBlogModalOpen(false)} className="px-4 py-2 text-xs font-bold text-slate-500">
                   Cancelar
                 </button>
-                <button type="submit" className="px-6 py-2.5 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs">
+                <button type="submit" className="px-6 py-2.5 bg-brand-600 text-white text-xs font-bold rounded-xl shadow-xs">
                   Salvar Artigo
                 </button>
               </div>
@@ -2519,7 +2519,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-6 space-y-5 my-8 shadow-2xl animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">
+                <div className="p-2 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400">
                   <Bot className="w-4 h-4" />
                 </div>
                 <h3 className="text-base font-bold font-display text-slate-900 dark:text-white">
@@ -2632,7 +2632,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     type="checkbox"
                     checked={taskAutoPublish}
                     onChange={(e) => setTaskAutoPublish(e.target.checked)}
-                    className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500"
+                    className="w-4 h-4 rounded text-brand-600 focus:ring-brand-500"
                   />
                   <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Publicar automaticamente no Blog
@@ -2644,7 +2644,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                     type="checkbox"
                     checked={taskEnabled}
                     onChange={(e) => setTaskEnabled(e.target.checked)}
-                    className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500"
+                    className="w-4 h-4 rounded text-brand-600 focus:ring-brand-500"
                   />
                   <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Tarefa Ativa
@@ -2662,7 +2662,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-xs cursor-pointer"
+                  className="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl shadow-xs cursor-pointer"
                 >
                   Salvar Tarefa
                 </button>
@@ -2735,7 +2735,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       {toast && (
         <div className="fixed bottom-6 right-6 z-80 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl border animate-in slide-in-from-bottom-5 duration-200 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800">
           {toast.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-brand-primary-500 shrink-0" />
           ) : (
             <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
           )}

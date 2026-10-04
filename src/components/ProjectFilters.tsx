@@ -21,21 +21,21 @@ export const ProjectFilters: React.FC<ProjectFiltersProps> = ({
       
       {/* Search Bar */}
       <div className="relative w-full md:w-96 lg:w-[420px]">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#7a6070] pointer-events-none" aria-hidden="true" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Buscar projetos por nome ou tecnologia..."
           aria-label="Buscar projetos por título ou tecnologia"
-          className="w-full pl-12 pr-12 py-3 text-sm sm:text-base bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xs focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-hidden transition-all text-slate-900 dark:text-white placeholder:text-slate-400 min-h-[48px]"
+          className="w-full pl-12 pr-12 py-3 text-sm sm:text-base bg-[#1a1318] border border-white/[0.08] rounded-2xl shadow-xs focus:ring-2 focus:ring-[#d4789a]/50 focus:border-[#d4789a] focus:outline-hidden transition-all text-[#f5eff2] placeholder:text-[#7a6070] min-h-[48px]"
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => onSearchChange('')}
             aria-label="Limpar filtro de busca"
-            className="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 text-xs text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold cursor-pointer rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 text-xs text-[#b89aa8] hover:text-white font-bold cursor-pointer rounded-lg hover:bg-[#241b20] transition-colors"
           >
             Limpar
           </button>
@@ -56,10 +56,10 @@ export const ProjectFilters: React.FC<ProjectFiltersProps> = ({
               type="button"
               onClick={() => onCategoryChange(cat)}
               aria-pressed={isSelected}
-              className={`px-4 sm:px-5 py-2.5 text-sm sm:text-base font-semibold rounded-2xl transition-all whitespace-nowrap shrink-0 min-h-[44px] flex items-center justify-center cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+              className={`px-4 sm:px-5 py-2.5 text-sm sm:text-base font-semibold rounded-2xl transition-all whitespace-nowrap shrink-0 min-h-[44px] flex items-center justify-center cursor-pointer focus:outline-hidden ${
                 isSelected
-                  ? 'bg-indigo-600 text-white dark:bg-indigo-500 shadow-md ring-1 ring-indigo-500'
-                  : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-gradient-to-r from-[#e8b0c4] via-[#d4789a] to-[#c9a84c] text-[#0f0d0e] font-bold shadow-lg shadow-[#d4789a]/25'
+                  : 'bg-[#1a1318] border border-white/[0.08] text-[#b89aa8] hover:border-[#d4789a]/40 hover:text-white'
               }`}
             >
               {cat}

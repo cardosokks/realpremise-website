@@ -127,19 +127,19 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
           onClick={() => setIsOpen(true)}
           aria-expanded="false"
           aria-label="Abrir chat de atendimento online"
-          className="relative group flex items-center gap-2.5 sm:gap-3 p-3 sm:px-4 sm:py-3.5 bg-slate-900 dark:bg-indigo-600 hover:bg-indigo-600 dark:hover:bg-indigo-500 text-white rounded-full shadow-xl hover:shadow-2xl hover:shadow-indigo-500/25 border border-slate-700/50 dark:border-indigo-400/30 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500/50"
+          className="relative group flex items-center gap-2.5 sm:gap-3 p-3 sm:px-4 sm:py-3.5 bg-[#1a1318] hover:bg-[#241b20] text-white rounded-full shadow-xl hover:shadow-2xl hover:shadow-[#d4789a]/20 border border-white/10 hover:border-[#d4789a]/40 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-[#d4789a]/50"
         >
           <div className="relative flex items-center justify-center">
-            <MessageSquare className="w-5 h-5 sm:w-5 sm:h-5 text-indigo-400 dark:text-white group-hover:rotate-6 transition-transform" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-slate-900 dark:ring-indigo-600 animate-pulse" />
+            <MessageSquare className="w-5 h-5 sm:w-5 sm:h-5 text-[#e8b0c4] group-hover:rotate-6 transition-transform" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#f0c870] rounded-full ring-2 ring-[#0f0d0e] animate-pulse" />
           </div>
 
           <div className="hidden sm:flex flex-col text-left pr-1">
             <span className="text-[11px] font-bold font-display tracking-tight text-white leading-tight">
               Atendimento Online
             </span>
-            <span className="text-[9px] text-emerald-400 font-medium leading-none flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-emerald-400" />
+            <span className="text-[9px] text-[#f0c870] font-medium leading-none flex items-center gap-1">
+              <span className="w-1 h-1 rounded-full bg-[#f0c870]" />
               Equipe disponível
             </span>
           </div>
@@ -161,18 +161,18 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
         >
           
           {/* Header */}
-          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-4 text-white flex items-center justify-between border-b border-slate-800/80">
+          <div className="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 p-4 text-white flex items-center justify-between border-b border-slate-800/80">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="relative w-9 h-9 rounded-xl bg-indigo-600 border border-indigo-400/30 flex items-center justify-center font-bold text-xs shadow-md shrink-0">
-                <Sparkles className="w-5 h-5 text-indigo-200" />
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-slate-900" />
+              <div className="relative w-9 h-9 rounded-xl bg-brand-600 border border-brand-400/30 flex items-center justify-center font-bold text-xs shadow-md shrink-0">
+                <Sparkles className="w-5 h-5 text-brand-200" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-brand-primary-400 rounded-full ring-2 ring-slate-900" />
               </div>
               <div className="min-w-0">
                 <h3 className="font-bold font-display text-sm leading-tight text-white truncate">
                   REALPREMISE Live
                 </h3>
-                <p className="text-[10px] text-emerald-400 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <p className="text-[10px] text-brand-primary-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary-400 animate-pulse" />
                   <span>Equipe pronta para atender</span>
                 </p>
               </div>
@@ -195,7 +195,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
               onClick={() => setActiveTab('chat')}
               className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'chat'
-                  ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-2xs'
+                  ? 'bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 shadow-2xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
               }`}
             >
@@ -207,8 +207,8 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
               onClick={() => setActiveTab('whatsapp')}
               className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'whatsapp'
-                  ? 'bg-emerald-600 text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-emerald-600'
+                  ? 'bg-brand-primary-600 text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-brand-primary-600'
               }`}
             >
               <MessageCircle className="w-3.5 h-3.5" />
@@ -224,7 +224,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
               <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
                 {messages.length === 0 ? (
                   <div className="text-center py-6 space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/80 border border-brand-200 dark:border-brand-800 text-brand-600 dark:text-brand-400 flex items-center justify-center mx-auto">
                       <MessageSquare className="w-6 h-6" />
                     </div>
                     <p className="text-slate-700 dark:text-slate-200 font-semibold">
@@ -255,7 +255,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
                           className={`max-w-[85%] p-3 rounded-2xl text-xs leading-relaxed ${
                             isAdmin
                               ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-tl-xs shadow-2xs'
-                              : 'bg-indigo-600 text-white rounded-tr-xs shadow-xs'
+                              : 'bg-brand-600 text-white rounded-tr-xs shadow-xs'
                           }`}
                         >
                           {msg.text}
@@ -279,7 +279,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
                         localStorage.removeItem('realpremise_chat_session_id');
                         setMessages([]);
                       }}
-                      className="text-[10px] text-indigo-600 hover:text-indigo-800 font-semibold"
+                      className="text-[10px] text-brand-600 hover:text-brand-800 font-semibold"
                     >
                       Nova conversa
                     </button>
@@ -292,7 +292,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
                     placeholder="Seu nome"
                     value={clientName || ''}
                     onChange={(e) => setClientName(e.target.value)}
-                    className="px-2.5 py-1.5 text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                    className="px-2.5 py-1.5 text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-1 focus:ring-brand-500 focus:outline-none"
                   />
                   <input
                     type="text"
@@ -308,7 +308,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
                         setClientEmail('');
                       }
                     }}
-                    className="px-2.5 py-1.5 text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                    className="px-2.5 py-1.5 text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-1 focus:ring-brand-500 focus:outline-none"
                   />
                 </div>
 
@@ -318,13 +318,13 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Digite sua mensagem..."
-                    className="flex-1 px-3.5 py-2 text-xs bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-slate-900 dark:text-white"
+                    className="flex-1 px-3.5 py-2 text-xs bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none text-slate-900 dark:text-white"
                   />
                   <button
                     type="submit"
                     disabled={sending || !inputText.trim()}
                     aria-label="Enviar mensagem"
-                    className="p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl shadow-xs transition-colors cursor-pointer"
+                    className="p-2.5 bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white rounded-xl shadow-xs transition-colors cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                   </button>
@@ -338,7 +338,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
           {activeTab === 'whatsapp' && (
             <div className="flex-1 p-6 flex flex-col items-center justify-between text-center bg-slate-50/50 dark:bg-slate-950/50 space-y-4">
               <div className="space-y-3 pt-2">
-                <div className="w-16 h-16 rounded-3xl bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
+                <div className="w-16 h-16 rounded-3xl bg-brand-primary-100 dark:bg-brand-primary-950/80 border border-brand-primary-300 dark:border-brand-primary-800 text-brand-primary-600 dark:text-brand-primary-400 flex items-center justify-center mx-auto shadow-md">
                   <Phone className="w-8 h-8" />
                 </div>
                 <div>
@@ -358,7 +358,7 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({ hidden = false }
                 <button
                   type="button"
                   onClick={handleOpenWhatsapp}
-                  className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="w-full py-3 px-4 bg-brand-primary-600 hover:bg-brand-primary-500 text-white text-xs font-bold rounded-2xl shadow-lg shadow-brand-primary-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>Iniciar Conversa no WhatsApp</span>
