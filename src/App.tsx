@@ -20,7 +20,7 @@ import { PartnersTicker } from './components/PartnersTicker';
 import { Footer } from './components/Footer';
 import { ServicesSection } from './components/ServicesSection';
 
-import { Project, BlogPost, Comment, Subscriber, User, ThemeMode, Partner, TeamMember } from './types';
+import { Project, BlogPost, Comment, Subscriber, User, ThemeMode, Partner, TeamMember, HeroVideoSettings } from './types';
 import {
   fetchProjects,
   fetchBlogPosts,
@@ -28,6 +28,7 @@ import {
   fetchSubscribers,
   fetchPartners,
   fetchTeamMembers,
+  fetchHeroSettings,
   getCurrentUser,
   postComment,
   likeComment,
@@ -35,6 +36,7 @@ import {
   deleteComment,
   logout
 } from './services/api';
+import { INITIAL_HERO_SETTINGS } from './data/initialData';
 import { resetDefaultSEO } from './utils/seo';
 
 export default function App() {
@@ -53,6 +55,7 @@ export default function App() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [heroSettings, setHeroSettings] = useState<HeroVideoSettings>(INITIAL_HERO_SETTINGS);
   const [loading, setLoading] = useState(true);
 
   // Search & Navigation
@@ -125,12 +128,13 @@ export default function App() {
   const loadInitialData = async () => {
     setLoading(true);
     try {
-      const [projData, blogData, commData, partnerData, teamData, user] = await Promise.all([
+      const [projData, blogData, commData, partnerData, teamData, heroData, user] = await Promise.all([
         fetchProjects(),
         fetchBlogPosts(),
         fetchComments(),
         fetchPartners(),
         fetchTeamMembers(),
+        fetchHeroSettings(),
         getCurrentUser()
       ]);
 
@@ -139,6 +143,7 @@ export default function App() {
       setComments(commData);
       setPartners(partnerData);
       setTeamMembers(teamData);
+      setHeroSettings(heroData);
       setCurrentUser(user);
 
       if (user) {
@@ -162,18 +167,20 @@ export default function App() {
 
   const handleRefreshData = async () => {
     try {
-      const [projData, blogData, commData, partnerData, teamData] = await Promise.all([
+      const [projData, blogData, commData, partnerData, teamData, heroData] = await Promise.all([
         fetchProjects(),
         fetchBlogPosts(),
         fetchComments(),
         fetchPartners(),
-        fetchTeamMembers()
+        fetchTeamMembers(),
+        fetchHeroSettings()
       ]);
       setProjects(projData);
       setBlogPosts(blogData);
       setComments(commData);
       setPartners(partnerData);
       setTeamMembers(teamData);
+      setHeroSettings(heroData);
       if (currentUser) {
         const subs = await fetchSubscribers();
         setSubscribers(subs);
@@ -344,6 +351,7 @@ export default function App() {
           onNavigate={handleNavigate}
           partners={partners}
           projectsCount={projects.length}
+          heroSettings={heroSettings}
         />
       )}
 
@@ -591,6 +599,8 @@ export default function App() {
           subscribers={subscribers}
           partners={partners}
           teamMembers={teamMembers}
+          heroSettings={heroSettings}
+          onUpdateHeroSettings={setHeroSettings}
           onRefreshData={handleRefreshData}
           onLogout={handleLogout}
         />

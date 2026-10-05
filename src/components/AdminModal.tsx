@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   X, Plus, Edit3, Trash2, CheckCircle, Sparkles, User, Key, Layers, 
   BookOpen, MessageSquare, Mail, Download, RefreshCw, Send, AlertCircle, 
   MessageCircle, Phone, Building2, Upload, Link2, ExternalLink, Image as ImageIcon,
   Users, BarChart3, LayoutDashboard, Globe, Shield, ChevronRight, Search, 
   SlidersHorizontal, Check, Eye, ArrowLeft, Menu, Tag, Linkedin, Github,
-  Bot, Play, Clock, Calendar, CheckCircle2, Loader2
+  Bot, Play, Clock, Calendar, CheckCircle2, Loader2, CheckSquare, Square, Filter,
+  Video, Film, Palette, ToggleLeft, ToggleRight
 } from 'lucide-react';
 import { 
-  Project, BlogPost, Comment, Subscriber, User as UserType, ChatSession, Partner, TeamMember, AutonomousNewsTask 
+  Project, BlogPost, Comment, Subscriber, User as UserType, ChatSession, Partner, TeamMember, AutonomousNewsTask, HeroVideoSettings 
 } from '../types';
 import { 
   createProject, updateProject, deleteProject, createBlogPost, updateBlogPost, 
-  deleteBlogPost, updateProfile, generateAiBlogPost, fetchChatSessions, 
+  deleteBlogPost, deleteBlogPosts, updateProfile, generateAiBlogPost, fetchChatSessions, 
   sendAdminReply, markChatSessionRead, deleteChatSession, createPartner, 
   updatePartner, deletePartner, fetchTeamMembers, createTeamMember, 
   updateTeamMember, deleteTeamMember, deleteComment, deleteSubscriber,
-  fetchAutonomousTasks, createAutonomousTask, updateAutonomousTask, deleteAutonomousTask, runAutonomousTask
+  fetchAutonomousTasks, createAutonomousTask, updateAutonomousTask, deleteAutonomousTask, runAutonomousTask,
+  updateHeroSettings
 } from '../services/api';
+import { INITIAL_HERO_SETTINGS, HERO_VIDEO_PRESETS } from '../data/initialData';
 
 interface AdminModalProps {
   isOpen: boolean;
@@ -29,11 +32,13 @@ interface AdminModalProps {
   subscribers: Subscriber[];
   partners?: Partner[];
   teamMembers?: TeamMember[];
+  heroSettings?: HeroVideoSettings;
+  onUpdateHeroSettings?: (settings: HeroVideoSettings) => void;
   onRefreshData: () => void;
   onLogout: () => void;
 }
 
-type AdminTab = 'dashboard' | 'projects' | 'blog' | 'ai-tasks' | 'team' | 'partners' | 'chats' | 'comments' | 'subscribers' | 'profile';
+type AdminTab = 'dashboard' | 'projects' | 'blog' | 'ai-tasks' | 'hero-video' | 'team' | 'partners' | 'chats' | 'comments' | 'subscribers' | 'profile';
 
 // Subcomponent for Partner Thumbnail
 const AdminPartnerCardItem: React.FC<{
@@ -212,12 +217,36 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   subscribers,
   partners = [],
   teamMembers = [],
+  heroSettings,
+  onUpdateHeroSettings,
   onRefreshData,
   onLogout
 }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
+
+  // Hero Video Background Settings State
+  const [heroVideoUrl, setHeroVideoUrl] = useState<string>(heroSettings?.videoUrl || INITIAL_HERO_SETTINGS.videoUrl);
+  const [heroFallbackUrl, setHeroFallbackUrl] = useState<string>(heroSettings?.fallbackVideoUrl || '');
+  const [heroPosterUrl, setHeroPosterUrl] = useState<string>(heroSettings?.posterUrl || '');
+  const [heroOpacity, setHeroOpacity] = useState<number>(heroSettings?.opacity !== undefined ? heroSettings.opacity : 0.25);
+  const [heroEnabled, setHeroEnabled] = useState<boolean>(heroSettings?.enabled !== false);
+  const [heroBlur, setHeroBlur] = useState<boolean>(Boolean(heroSettings?.blurEffect));
+  const [heroSaving, setHeroSaving] = useState<boolean>(false);
+  const [heroUploadType, setHeroUploadType] = useState<'preset' | 'url' | 'file'>('preset');
+  const [videoPreviewKey, setVideoPreviewKey] = useState<number>(0);
+
+  useEffect(() => {
+    if (heroSettings) {
+      setHeroVideoUrl(heroSettings.videoUrl || INITIAL_HERO_SETTINGS.videoUrl);
+      setHeroFallbackUrl(heroSettings.fallbackVideoUrl || '');
+      setHeroPosterUrl(heroSettings.posterUrl || '');
+      setHeroOpacity(heroSettings.opacity !== undefined ? heroSettings.opacity : 0.25);
+      setHeroEnabled(heroSettings.enabled !== false);
+      setHeroBlur(Boolean(heroSettings.blurEffect));
+    }
+  }, [heroSettings]);
 
   // Live Chat Sessions State
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
@@ -254,6 +283,23 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   const [postUploadType, setPostUploadType] = useState<'file' | 'link'>('file');
   const [aiPromptTopic, setAiPromptTopic] = useState('');
   const [aiGenerating, setAiGenerating] = useState(false);
+
+  // Blog Post Multi-Selection & Filter State
+  const [selectedPostIds, setSelectedPostIds] = useState<string[]>([]);
+  const [blogSearchTerm, setBlogSearchTerm] = useState('');
+  const [blogCategoryFilter, setBlogCategoryFilter] = useState('Todos');
+
+  // Filtered Blog Posts in Admin (Unconditional Hook at Top)
+  const adminFilteredPosts = useMemo(() => {
+    return blogPosts.filter(post => {
+      const matchCat = blogCategoryFilter === 'Todos' || post.category.toLowerCase() === blogCategoryFilter.toLowerCase();
+      const matchSearch = !blogSearchTerm.trim() ||
+        post.title.toLowerCase().includes(blogSearchTerm.toLowerCase()) ||
+        post.summary.toLowerCase().includes(blogSearchTerm.toLowerCase()) ||
+        post.tags.some(t => t.toLowerCase().includes(blogSearchTerm.toLowerCase()));
+      return matchCat && matchSearch;
+    });
+  }, [blogPosts, blogCategoryFilter, blogSearchTerm]);
 
   // Partner Modal State
   const [partnerModalOpen, setPartnerModalOpen] = useState(false);
@@ -345,14 +391,86 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     }
   };
 
+  // Hero Video Background Handlers
+  const handleSaveHeroSettings = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!heroVideoUrl.trim()) {
+      showToast('A URL do vídeo de fundo é obrigatória.', 'error');
+      return;
+    }
+
+    try {
+      setHeroSaving(true);
+      const updated = await updateHeroSettings({
+        videoUrl: heroVideoUrl.trim(),
+        fallbackVideoUrl: heroFallbackUrl.trim() || undefined,
+        posterUrl: heroPosterUrl.trim() || undefined,
+        opacity: heroOpacity,
+        enabled: heroEnabled,
+        blurEffect: heroBlur
+      });
+
+      if (onUpdateHeroSettings) {
+        onUpdateHeroSettings(updated);
+      }
+      showToast('Vídeo de fundo da Hero salvo com sucesso!');
+      onRefreshData();
+    } catch (err: any) {
+      showToast(err.message || 'Erro ao salvar configurações do vídeo.', 'error');
+    } finally {
+      setHeroSaving(false);
+    }
+  };
+
+  const handleApplyPreset = (presetUrl: string, posterUrl?: string) => {
+    setHeroVideoUrl(presetUrl);
+    if (posterUrl) setHeroPosterUrl(posterUrl);
+    setVideoPreviewKey(prev => prev + 1);
+    showToast('Preset aplicado no preview! Clique em "Salvar Alterações" para fixar no site.');
+  };
+
+  const handleResetHeroDefault = () => {
+    setHeroVideoUrl(INITIAL_HERO_SETTINGS.videoUrl);
+    setHeroFallbackUrl(INITIAL_HERO_SETTINGS.fallbackVideoUrl || '');
+    setHeroPosterUrl(INITIAL_HERO_SETTINGS.posterUrl || '');
+    setHeroOpacity(INITIAL_HERO_SETTINGS.opacity);
+    setHeroEnabled(INITIAL_HERO_SETTINGS.enabled);
+    setHeroBlur(Boolean(INITIAL_HERO_SETTINGS.blurEffect));
+    setVideoPreviewKey(prev => prev + 1);
+    showToast('Valores padrão restaurados! Clique em "Salvar Alterações" para aplicar.');
+  };
+
+  const handleVideoFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('video/')) {
+      showToast('Selecione um arquivo de vídeo válido (MP4 ou WebM).', 'error');
+      return;
+    }
+
+    if (file.size > 25 * 1024 * 1024) {
+      showToast('O arquivo de vídeo deve ter no máximo 25MB para armazenamento no navegador.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setHeroVideoUrl(reader.result);
+        setVideoPreviewKey(prev => prev + 1);
+        showToast('Vídeo carregado com sucesso!');
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   useEffect(() => {
     if (isOpen) {
       loadChatSessions();
       loadAutonomousTasks();
     }
   }, [isOpen, activeTab]);
-
-  if (!isOpen) return null;
 
   // File Upload Helper
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, setter: (val: string) => void) => {
@@ -708,9 +826,62 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           setConfirmLoading(true);
           await deleteBlogPost(id);
           showToast(`Artigo "${title}" excluído com sucesso.`);
+          setSelectedPostIds(prev => prev.filter(item => item !== id));
           onRefreshData();
         } catch (err: any) {
           showToast(err.message || 'Erro ao excluir artigo.', 'error');
+        } finally {
+          setConfirmLoading(false);
+          setConfirmDialog(null);
+        }
+      }
+    });
+  };
+
+  // Toggle single post selection
+  const handleTogglePostSelect = (id: string) => {
+    setSelectedPostIds(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  // Toggle select all filtered posts
+  const handleToggleSelectAllPosts = () => {
+    if (selectedPostIds.length === adminFilteredPosts.length && adminFilteredPosts.length > 0) {
+      setSelectedPostIds([]);
+    } else {
+      setSelectedPostIds(adminFilteredPosts.map(p => p.id));
+    }
+  };
+
+  // Clear all selections
+  const handleClearPostSelection = () => {
+    setSelectedPostIds([]);
+  };
+
+  // Bulk Delete Selected Posts
+  const handleBulkDeletePosts = () => {
+    if (selectedPostIds.length === 0) return;
+
+    const count = selectedPostIds.length;
+    const selectedTitles = blogPosts
+      .filter(p => selectedPostIds.includes(p.id))
+      .map(p => p.title);
+
+    setConfirmDialog({
+      isOpen: true,
+      title: `Excluir ${count} Notícia(s) Selecionada(s)`,
+      message: `Você está prestes a excluir permanentemente ${count} notícia(s) do blog. Esta operação removerá também os comentários vinculados e não poderá ser desfeita.`,
+      itemTitle: selectedTitles.slice(0, 3).join(', ') + (count > 3 ? ` e mais ${count - 3} outros` : ''),
+      onConfirm: async () => {
+        try {
+          setConfirmLoading(true);
+          const res = await deleteBlogPosts(selectedPostIds);
+          showToast(`${res.deletedCount} notícia(s) excluída(s) com sucesso.`);
+          setSelectedPostIds([]);
+          onRefreshData();
+        } catch (err: any) {
+          showToast(err.message || 'Erro ao excluir notícias.', 'error');
         } finally {
           setConfirmLoading(false);
           setConfirmDialog(null);
@@ -959,6 +1130,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     { id: 'projects' as AdminTab, label: 'Projetos', icon: Layers, count: projects.length },
     { id: 'blog' as AdminTab, label: 'Blog & Artigos', icon: BookOpen, count: blogPosts.length },
     { id: 'ai-tasks' as AdminTab, label: 'Automação & IA', icon: Bot, count: autonomousTasks.filter(t => t.enabled).length, badge: 'Robôs' },
+    { id: 'hero-video' as AdminTab, label: 'Vídeo da Hero (Fundo)', icon: Video, count: null, badge: 'Visual' },
     { id: 'team' as AdminTab, label: 'Nossa Equipe', icon: Users, count: teamMembers.length },
     { id: 'partners' as AdminTab, label: 'Tecnologias & Stack', icon: Building2, count: partners.length },
     { id: 'chats' as AdminTab, label: 'Mensagens & Chat', icon: MessageCircle, count: chatSessions.length, highlight: totalUnreadChats > 0 ? totalUnreadChats : null },
@@ -966,6 +1138,8 @@ export const AdminModal: React.FC<AdminModalProps> = ({
     { id: 'subscribers' as AdminTab, label: 'Inscritos Newsletter', icon: Mail, count: subscribers.length },
     { id: 'profile' as AdminTab, label: 'Perfil & Acesso', icon: Shield, count: null },
   ];
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex bg-slate-900/60 backdrop-blur-sm overflow-hidden animate-in fade-in duration-200">
@@ -1335,61 +1509,324 @@ export const AdminModal: React.FC<AdminModalProps> = ({
           {/* ================= TAB 3: BLOG ================= */}
           {activeTab === 'blog' && (
             <div className="space-y-6 max-w-7xl mx-auto">
+              
+              {/* Header */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-bold font-display text-slate-900 dark:text-white">Artigos do Blog</h3>
-                  <p className="text-xs text-slate-400">Publique novidades, tutoriais técnicos e estudos de caso.</p>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white">
+                      Artigos & Notícias do Blog
+                    </h3>
+                    <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                      {blogPosts.length} total
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Publique, edite e exclua notícias individualmente ou selecione várias para exclusão em massa.
+                  </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => handleOpenBlogForm()}
-                  className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Novo Artigo</span>
-                </button>
+
+                <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenBlogForm()}
+                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-md shadow-brand-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Novo Artigo</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {blogPosts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col justify-between gap-3 shadow-xs hover:border-brand-500/40 transition-all"
-                  >
-                    <div className="space-y-2">
-                      <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        <img src={post.coverUrl} alt={post.title} className="w-full h-full object-cover" />
-                        <span className="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold rounded bg-brand-600 text-white">
-                          {post.category}
-                        </span>
-                      </div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">{post.title}</h4>
-                      <p className="text-xs text-slate-500 line-clamp-2">{post.summary}</p>
+              {/* Search, Filter & Bulk Selection Bar */}
+              <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3.5 shadow-xs">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                  
+                  {/* Search Input */}
+                  <div className="relative flex-1">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Buscar por título, resumo ou tag..."
+                      value={blogSearchTerm}
+                      onChange={(e) => setBlogSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-9 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+                    />
+                    {blogSearchTerm && (
+                      <button
+                        type="button"
+                        onClick={() => setBlogSearchTerm('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        title="Limpar busca"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Category Filter Pills */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+                    {['Todos', 'Design & UX', 'Inteligência Artificial', 'Arquitetura', 'Engenharia', 'Geral'].map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setBlogCategoryFilter(cat)}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
+                          blogCategoryFilter.toLowerCase() === cat.toLowerCase()
+                            ? 'bg-brand-600 text-white shadow-xs'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Master Selection Toolbar */}
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleToggleSelectAllPosts}
+                      disabled={adminFilteredPosts.length === 0}
+                      className="inline-flex items-center gap-2 font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {selectedPostIds.length > 0 && selectedPostIds.length === adminFilteredPosts.length ? (
+                        <CheckSquare className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+                      ) : (
+                        <Square className="w-4 h-4 text-slate-400" />
+                      )}
+                      <span>
+                        {selectedPostIds.length === adminFilteredPosts.length && adminFilteredPosts.length > 0
+                          ? 'Desmarcar todas'
+                          : `Selecionar todas (${adminFilteredPosts.length})`}
+                      </span>
+                    </button>
+
+                    {selectedPostIds.length > 0 && (
+                      <span className="text-slate-400">·</span>
+                    )}
+
+                    {selectedPostIds.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleClearPostSelection}
+                        className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 underline cursor-pointer"
+                      >
+                        Limpar seleção
+                      </button>
+                    )}
+                  </div>
+
+                  <span className="text-slate-500 font-mono text-[11px]">
+                    Exibindo {adminFilteredPosts.length} de {blogPosts.length} notícia(s)
+                  </span>
+                </div>
+              </div>
+
+              {/* Bulk Action Sticky/Floating Alert Banner */}
+              {selectedPostIds.length > 0 && (
+                <div className="p-3.5 sm:p-4 bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-400/50 dark:border-rose-500/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <div className="p-2 rounded-xl bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-300 shrink-0">
+                      <Trash2 className="w-5 h-5" />
                     </div>
-
-                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
-                      <span className="text-[11px] font-mono text-slate-400">{post.readTime}</span>
-
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => handleOpenBlogForm(post)}
-                          className="p-1.5 text-slate-400 hover:text-brand-600 rounded-lg"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeletePost(post.id, post.title)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-rose-900 dark:text-rose-100">
+                        {selectedPostIds.length} {selectedPostIds.length === 1 ? 'notícia selecionada' : 'notícias selecionadas'} para exclusão
+                      </h4>
+                      <p className="text-xs text-rose-700 dark:text-rose-300/80">
+                        Clique no botão para remover permanentemente as notícias marcadas.
+                      </p>
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                    <button
+                      type="button"
+                      onClick={handleClearPostSelection}
+                      className="px-3.5 py-2 text-xs font-semibold text-rose-800 dark:text-rose-200 hover:bg-rose-100/70 dark:hover:bg-rose-900/40 rounded-xl transition-colors cursor-pointer"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleBulkDeletePosts}
+                      className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-md shadow-rose-600/30 flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Excluir Selecionadas ({selectedPostIds.length})</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Blog Posts Grid */}
+              {adminFilteredPosts.length === 0 ? (
+                <div className="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3">
+                  <BookOpen className="w-10 h-10 text-slate-300 dark:text-slate-700 mx-auto" />
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                    Nenhuma notícia encontrada
+                  </h4>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                    {blogSearchTerm || blogCategoryFilter !== 'Todos'
+                      ? 'Nenhum artigo corresponde aos filtros de busca atuais.'
+                      : 'Nenhum artigo publicado no momento. Clique em "Novo Artigo" para começar.'}
+                  </p>
+                  {(blogSearchTerm || blogCategoryFilter !== 'Todos') && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setBlogSearchTerm('');
+                        setBlogCategoryFilter('Todos');
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 rounded-lg hover:underline cursor-pointer"
+                    >
+                      Limpar filtros de busca
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {adminFilteredPosts.map((post) => {
+                    const isSelected = selectedPostIds.includes(post.id);
+
+                    return (
+                      <div
+                        key={post.id}
+                        className={`group relative p-4 bg-white dark:bg-slate-900 border rounded-2xl flex flex-col justify-between gap-3 shadow-xs transition-all duration-200 ${
+                          isSelected
+                            ? 'border-brand-500 ring-2 ring-brand-500/30 bg-brand-50/10 dark:bg-brand-950/20'
+                            : 'border-slate-200 dark:border-slate-800 hover:border-brand-500/40'
+                        }`}
+                      >
+                        <div className="space-y-2.5">
+                          {/* Image Thumbnail with Overlay Checkbox */}
+                          <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+                            <img 
+                              src={post.coverUrl} 
+                              alt={post.title} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                              loading="lazy"
+                            />
+                            
+                            {/* Gradient overlay on top */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/40 pointer-events-none" />
+
+                            {/* Checkbox Trigger (Top-Left) */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTogglePostSelect(post.id);
+                              }}
+                              aria-label={isSelected ? `Desmarcar notícia ${post.title}` : `Selecionar notícia ${post.title}`}
+                              aria-checked={isSelected}
+                              className={`absolute top-2.5 left-2.5 p-1.5 rounded-lg backdrop-blur-md transition-all cursor-pointer flex items-center justify-center ${
+                                isSelected
+                                  ? 'bg-brand-600 text-white shadow-md'
+                                  : 'bg-slate-900/80 text-white/90 hover:bg-slate-900 border border-white/20'
+                              }`}
+                            >
+                              {isSelected ? (
+                                <CheckSquare className="w-4 h-4" />
+                              ) : (
+                                <Square className="w-4 h-4" />
+                              )}
+                            </button>
+
+                            {/* Category Badge (Top-Right) */}
+                            <span className="absolute top-2.5 right-2.5 px-2.5 py-0.5 text-[10px] font-bold rounded-lg bg-brand-600 text-white shadow-sm">
+                              {post.category}
+                            </span>
+
+                            {/* Date Badge (Bottom-Left) */}
+                            <span className="absolute bottom-2 left-2.5 text-[10px] text-white/80 font-mono">
+                              {post.publishedAt}
+                            </span>
+                          </div>
+
+                          {/* Title & Summary */}
+                          <div>
+                            <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                              {post.title}
+                            </h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                              {post.summary}
+                            </p>
+                          </div>
+
+                          {/* Tags Preview */}
+                          {post.tags && post.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {post.tags.slice(0, 3).map((tag, tIdx) => (
+                                <span
+                                  key={tIdx}
+                                  className="px-1.5 py-0.5 text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 rounded"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                              {post.tags.length > 3 && (
+                                <span className="text-[10px] font-mono text-slate-400">
+                                  +{post.tags.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action Footer */}
+                        <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                          <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{post.readTime}</span>
+                          </span>
+
+                          <div className="flex items-center gap-1">
+                            {/* Checkbox Quick Action */}
+                            <button
+                              type="button"
+                              onClick={() => handleTogglePostSelect(post.id)}
+                              className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1 ${
+                                isSelected
+                                  ? 'text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60'
+                                  : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
+                              }`}
+                              title={isSelected ? 'Desmarcar' : 'Selecionar'}
+                            >
+                              {isSelected ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                            </button>
+
+                            {/* Edit Post */}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenBlogForm(post)}
+                              className="p-1.5 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                              title="Editar Artigo"
+                              aria-label={`Editar artigo ${post.title}`}
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+
+                            {/* Delete Single Post */}
+                            <button
+                              type="button"
+                              onClick={() => handleDeletePost(post.id, post.title)}
+                              className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+                              title="Excluir Artigo"
+                              aria-label={`Excluir artigo ${post.title}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -1583,6 +2020,424 @@ export const AdminModal: React.FC<AdminModalProps> = ({
                   ))
                 )}
               </div>
+            </div>
+          )}
+
+          {/* ================= TAB: HERO VIDEO BACKGROUND SETTINGS ================= */}
+          {activeTab === 'hero-video' && (
+            <div className="space-y-8 max-w-7xl mx-auto">
+              
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 rounded-xl bg-[#faebf2] dark:bg-[#d4789a]/20 text-[#be5980] dark:text-[#e8b0c4]">
+                      <Video className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white">
+                      Vídeo de Fundo da Hero (Banner Principal)
+                    </h3>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    Personalize o vídeo em loop sem áudio exibido na página inicial, escolha presets de alta tecnologia ou envie seu próprio vídeo MP4.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={handleResetHeroDefault}
+                    className="px-3.5 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl transition-colors cursor-pointer"
+                  >
+                    Restaurar Padrão
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveHeroSettings()}
+                    disabled={heroSaving}
+                    className="px-5 py-2 bg-gradient-to-r from-[#e8b0c4] via-[#d4789a] to-[#c9a84c] text-[#0f0d0e] hover:brightness-110 text-xs font-bold rounded-xl shadow-md shadow-[#d4789a]/30 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  >
+                    {heroSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                    <span>{heroSaving ? 'Salvando...' : 'Salvar Alterações'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Grid: Live Preview & Configuration Controls */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+                
+                {/* Left Column: Live Interactive Preview */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Film className="w-4 h-4 text-brand-500" />
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                          Pré-visualização em Tempo Real
+                        </h4>
+                      </div>
+                      <span className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                        Loop Ativo · Mudo
+                      </span>
+                    </div>
+
+                    {/* Simulated Hero Viewport Container */}
+                    <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center">
+                      {heroEnabled ? (
+                        <>
+                          <video
+                            key={videoPreviewKey + heroVideoUrl}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            style={{ opacity: heroOpacity }}
+                            className={`w-full h-full object-cover filter saturate-150 contrast-125 transition-all duration-300 ${
+                              heroBlur ? 'blur-[2px]' : ''
+                            }`}
+                            poster={heroPosterUrl || undefined}
+                          >
+                            <source src={heroVideoUrl} type="video/mp4" />
+                            {heroFallbackUrl && <source src={heroFallbackUrl} type="video/mp4" />}
+                          </video>
+
+                          {/* Overlay gradient mask mimicking actual Hero */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/40 pointer-events-none" />
+                          <div className="absolute inset-0 bg-radial from-transparent via-slate-950/40 to-slate-950/80 pointer-events-none" />
+
+                          {/* Simulated Typography */}
+                          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 z-10 pointer-events-none space-y-1.5">
+                            <span className="text-[10px] uppercase font-bold tracking-widest text-[#f0c870] font-mono">
+                              REALPREMISE Preview
+                            </span>
+                            <p className="text-sm sm:text-base font-extrabold text-white max-w-xs leading-tight">
+                              Criamos Landing Pages, Sites e Soluções Incríveis
+                            </p>
+                            <span className="text-[10px] text-slate-300 font-mono">
+                              Opacidade Atual: {Math.round(heroOpacity * 100)}%
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="p-8 text-center space-y-2">
+                          <Video className="w-8 h-8 text-slate-600 mx-auto" />
+                          <p className="text-xs text-slate-400">Vídeo desativado. O fundo usará apenas cores e auras radiais.</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Quick Tuning Sliders */}
+                    <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+                      
+                      {/* Enable / Disable Switch */}
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                            Exibir Vídeo de Fundo na Hero
+                          </label>
+                          <p className="text-[11px] text-slate-400">Ativa ou oculta a reprodução de vídeo no banner da página inicial.</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setHeroEnabled(!heroEnabled)}
+                          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                            heroEnabled ? 'bg-brand-600' : 'bg-slate-300 dark:bg-slate-700'
+                          }`}
+                        >
+                          <span
+                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                              heroEnabled ? 'translate-x-5' : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      {/* Opacity Range Slider */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs font-bold">
+                          <span className="text-slate-700 dark:text-slate-300">Opacidade do Vídeo</span>
+                          <span className="font-mono text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950 px-2 py-0.5 rounded-md">
+                            {Math.round(heroOpacity * 100)}%
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0.05"
+                          max="0.80"
+                          step="0.05"
+                          value={heroOpacity}
+                          onChange={(e) => setHeroOpacity(parseFloat(e.target.value))}
+                          className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-600"
+                        />
+                        <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+                          <span>5% (Mais Sutil)</span>
+                          <span>25% (Recomendado)</span>
+                          <span>80% (Mais Intenso)</span>
+                        </div>
+                      </div>
+
+                      {/* Blur Effect Toggle */}
+                      <div className="flex items-center justify-between pt-1">
+                        <div>
+                          <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                            Desfoque Suave (Blur)
+                          </label>
+                          <p className="text-[11px] text-slate-400">Aplica leve desfoque para focar totalmente na leitura dos textos.</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setHeroBlur(!heroBlur)}
+                          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                            heroBlur ? 'bg-brand-600' : 'bg-slate-300 dark:bg-slate-700'
+                          }`}
+                        >
+                          <span
+                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                              heroBlur ? 'translate-x-5' : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Source Selection (Presets, Custom URL, Upload) */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4 shadow-sm">
+                    
+                    {/* Method Selector Tabs */}
+                    <div className="flex p-1 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold">
+                      <button
+                        type="button"
+                        onClick={() => setHeroUploadType('preset')}
+                        className={`flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          heroUploadType === 'preset'
+                            ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-xs'
+                            : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                        }`}
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Galeria de Presets</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setHeroUploadType('url')}
+                        className={`flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          heroUploadType === 'url'
+                            ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-xs'
+                            : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                        }`}
+                      >
+                        <Link2 className="w-3.5 h-3.5" />
+                        <span>Link / URL Direta</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setHeroUploadType('file')}
+                        className={`flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          heroUploadType === 'file'
+                            ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-xs'
+                            : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                        }`}
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload MP4</span>
+                      </button>
+                    </div>
+
+                    {/* VIEW 1: PRESET GALLERY CARDS */}
+                    {heroUploadType === 'preset' && (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                            Selecione um Tema de Alta Tecnologia (1-Clique):
+                          </label>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[380px] overflow-y-auto pr-1 scrollbar-none">
+                          {HERO_VIDEO_PRESETS.map((preset) => {
+                            const isCurrent = heroVideoUrl === preset.videoUrl;
+
+                            return (
+                              <div
+                                key={preset.id}
+                                onClick={() => handleApplyPreset(preset.videoUrl, preset.thumbnailUrl)}
+                                className={`group relative p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                                  isCurrent
+                                    ? 'border-brand-500 ring-2 ring-brand-500/30 bg-brand-50/20 dark:bg-brand-950/30'
+                                    : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 hover:border-brand-500/40'
+                                }`}
+                              >
+                                <div className="space-y-2">
+                                  <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-900">
+                                    <img
+                                      src={preset.thumbnailUrl}
+                                      alt={preset.name}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                      loading="lazy"
+                                    />
+                                    <span className="absolute top-2 right-2 px-2 py-0.5 text-[9px] font-bold rounded bg-slate-950/80 text-white backdrop-blur-xs font-mono">
+                                      {preset.category}
+                                    </span>
+                                    {isCurrent && (
+                                      <div className="absolute inset-0 bg-brand-600/30 backdrop-blur-2xs flex items-center justify-center">
+                                        <span className="px-2.5 py-1 rounded-lg bg-brand-600 text-white text-[10px] font-bold shadow-md flex items-center gap-1">
+                                          <Check className="w-3 h-3" />
+                                          <span>Ativo</span>
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  <div>
+                                    <h5 className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                                      {preset.name}
+                                    </h5>
+                                    <p className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5">
+                                      {preset.description}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  className={`w-full py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
+                                    isCurrent
+                                      ? 'bg-brand-600 text-white shadow-xs'
+                                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 group-hover:bg-brand-50 group-hover:text-brand-600'
+                                  }`}
+                                >
+                                  {isCurrent ? 'Preset Selecionado' : 'Usar Este Preset'}
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* VIEW 2: CUSTOM URL */}
+                    {heroUploadType === 'url' && (
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                            URL do Arquivo de Vídeo Principal (MP4 / WebM) *
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="url"
+                              value={heroVideoUrl}
+                              onChange={(e) => {
+                                setHeroVideoUrl(e.target.value);
+                                setVideoPreviewKey(prev => prev + 1);
+                              }}
+                              placeholder="https://exemplo.com/videos/meu-video-hero.mp4"
+                              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono"
+                            />
+                          </div>
+                          <p className="text-[10px] text-slate-400 mt-1">
+                            Insira um link direto para um arquivo .mp4 hospedado em CDN, Mixkit, Google Cloud Storage, Cloudinary, AWS S3, etc.
+                          </p>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                            URL do Vídeo Secundário / Fallback (Opcional)
+                          </label>
+                          <input
+                            type="url"
+                            value={heroFallbackUrl}
+                            onChange={(e) => setHeroFallbackUrl(e.target.value)}
+                            placeholder="https://commondatastorage.googleapis.com/.../video.mp4"
+                            className="w-full px-3.5 py-2.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                            Imagem Poster de Pré-carregamento (Opcional)
+                          </label>
+                          <input
+                            type="url"
+                            value={heroPosterUrl}
+                            onChange={(e) => setHeroPosterUrl(e.target.value)}
+                            placeholder="https://images.unsplash.com/photo-..."
+                            className="w-full px-3.5 py-2.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* VIEW 3: FILE UPLOAD */}
+                    {heroUploadType === 'file' && (
+                      <div className="space-y-4">
+                        <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-brand-500 transition-colors bg-slate-50/50 dark:bg-slate-950/50">
+                          <input
+                            type="file"
+                            id="hero-video-file"
+                            accept="video/mp4,video/webm"
+                            onChange={handleVideoFileUpload}
+                            className="hidden"
+                          />
+                          <label htmlFor="hero-video-file" className="cursor-pointer block space-y-2">
+                            <div className="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 mx-auto flex items-center justify-center shadow-xs">
+                              <Upload className="w-6 h-6" />
+                            </div>
+                            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block">
+                              Clique para escolher vídeo local (.mp4 ou .webm)
+                            </span>
+                            <span className="text-[11px] text-slate-400 block">
+                              Recomendado: vídeos curtos (5 a 15s) de até 25MB para carregamento instantâneo.
+                            </span>
+                          </label>
+                        </div>
+
+                        {heroVideoUrl.startsWith('data:video') && (
+                          <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl flex items-center justify-between text-xs text-emerald-800 dark:text-emerald-300">
+                            <span className="flex items-center gap-2">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                              <span>Arquivo de vídeo local carregado e pronto para uso!</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setHeroVideoUrl(INITIAL_HERO_SETTINGS.videoUrl);
+                                setVideoPreviewKey(prev => prev + 1);
+                              }}
+                              className="text-slate-500 hover:text-slate-900 dark:hover:text-white underline cursor-pointer"
+                            >
+                              Remover
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Bottom Save Reminder */}
+                    <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <p className="text-[11px] text-slate-400">
+                        Após selecionar ou alterar o vídeo, clique em "Salvar Alterações" para aplicar no site público.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => handleSaveHeroSettings()}
+                        disabled={heroSaving}
+                        className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl shadow-md shadow-brand-500/20 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                      >
+                        {heroSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                        <span>Salvar</span>
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           )}
 

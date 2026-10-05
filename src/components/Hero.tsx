@@ -1,7 +1,8 @@
 import React from 'react';
 import { PenTool, Layout, Rocket, ArrowRight, Users } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Partner } from '../types';
+import { Partner, HeroVideoSettings } from '../types';
+import { INITIAL_HERO_SETTINGS } from '../data/initialData';
 
 interface HeroProps {
   searchQuery?: string;
@@ -11,19 +12,59 @@ interface HeroProps {
   onNavigate?: (section: string) => void;
   partners?: Partner[];
   projectsCount?: number;
+  heroSettings?: HeroVideoSettings;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   onNavigate,
-  projectsCount = 12
+  projectsCount = 12,
+  heroSettings = INITIAL_HERO_SETTINGS
 }) => {
+  const isVideoEnabled = heroSettings?.enabled !== false;
+  const currentVideoUrl = heroSettings?.videoUrl || INITIAL_HERO_SETTINGS.videoUrl;
+  const currentPosterUrl = heroSettings?.posterUrl || INITIAL_HERO_SETTINGS.posterUrl;
+  const currentFallbackUrl = heroSettings?.fallbackVideoUrl || INITIAL_HERO_SETTINGS.fallbackVideoUrl;
+  const videoOpacity = heroSettings?.opacity !== undefined ? heroSettings.opacity : 0.25;
+
   return (
     <section className="relative bg-[#fcf9fa] dark:bg-[#0f0d0e] text-[#1c1418] dark:text-[#f5eff2] pt-8 pb-12 sm:pt-12 sm:pb-16 border-b border-black/[0.08] dark:border-white/[0.08] transition-colors overflow-hidden lg:h-[85vh] lg:flex lg:flex-col lg:justify-center">
       
+      {/* Background Video Loop (Muted, AutoPlay, PlaysInline, Continuous Loop) */}
+      {isVideoEnabled && (
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <video
+            key={currentVideoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden="true"
+            style={{ opacity: videoOpacity }}
+            className={`w-full h-full object-cover filter saturate-150 contrast-125 transition-opacity duration-700 ${heroSettings?.blurEffect ? 'blur-[2px]' : ''}`}
+            poster={currentPosterUrl}
+          >
+            <source
+              src={currentVideoUrl}
+              type="video/mp4"
+            />
+            {currentFallbackUrl && currentFallbackUrl !== currentVideoUrl && (
+              <source
+                src={currentFallbackUrl}
+                type="video/mp4"
+              />
+            )}
+          </video>
+
+          {/* Ambient Gradient Overlays for High Contrast & WCAG 2.1 AA Legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fcf9fa]/80 via-transparent to-[#fcf9fa] dark:from-[#0f0d0e]/85 dark:via-[#0f0d0e]/40 dark:to-[#0f0d0e]" />
+          <div className="absolute inset-0 bg-radial from-transparent via-[#fcf9fa]/50 to-[#fcf9fa] dark:via-[#0f0d0e]/60 dark:to-[#0f0d0e]" />
+        </div>
+      )}
+
       {/* Soft Ambient Radial Aura Background (Rose & Gold Glows from Real Premise) */}
-      <div className="absolute top-1/3 right-0 -translate-y-1/2 w-[400px] h-[400px] sm:w-[650px] sm:h-[650px] lg:w-[850px] lg:h-[850px] bg-gradient-to-tr from-[#d4789a]/15 via-[#c9a84c]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-0" />
-      <div className="absolute bottom-1/4 left-0 w-72 h-72 sm:w-[450px] sm:h-[450px] bg-[#9e4d6b]/10 rounded-full blur-3xl pointer-events-none -z-0" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#d4789a]/30 to-transparent" />
+      <div className="absolute top-1/3 right-0 -translate-y-1/2 w-[400px] h-[400px] sm:w-[650px] sm:h-[650px] lg:w-[850px] lg:h-[850px] bg-gradient-to-tr from-[#d4789a]/15 via-[#c9a84c]/10 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-1/4 left-0 w-72 h-72 sm:w-[450px] sm:h-[450px] bg-[#9e4d6b]/10 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#d4789a]/30 to-transparent z-10" />
 
       <div className="relative z-10 max-w-[1536px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 w-full space-y-10 sm:space-y-12">
         

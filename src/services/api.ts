@@ -1,5 +1,5 @@
-import { Project, BlogPost, Comment, Subscriber, User, AuthResponse, ChatSession, ChatMessage, Partner, TeamMember, AutonomousNewsTask } from '../types';
-import { INITIAL_PARTNERS, INITIAL_TEAM_MEMBERS } from '../data/initialData';
+import { Project, BlogPost, Comment, Subscriber, User, AuthResponse, ChatSession, ChatMessage, Partner, TeamMember, AutonomousNewsTask, HeroVideoSettings } from '../types';
+import { INITIAL_PARTNERS, INITIAL_TEAM_MEMBERS, INITIAL_HERO_SETTINGS } from '../data/initialData';
 
 const TOKEN_KEY = 'devgallery_jwt_token';
 
@@ -182,6 +182,33 @@ export async function deleteBlogPost(id: string): Promise<void> {
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Erro ao excluir artigo.');
+}
+
+export async function deleteBlogPosts(ids: string[]): Promise<{ deletedCount: number }> {
+  if (!ids || ids.length === 0) return { deletedCount: 0 };
+  
+  try {
+    const res = await fetch('/api/blog/bulk-delete', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ ids })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao excluir artigos em lote.');
+    return { deletedCount: data.deletedCount || ids.length };
+  } catch (err: any) {
+    // Fallback: sequential delete if bulk endpoint fails
+    let successCount = 0;
+    for (const id of ids) {
+      try {
+        await deleteBlogPost(id);
+        successCount++;
+      } catch (e) {
+        console.error(`Erro ao excluir post ${id}:`, e);
+      }
+    }
+    return { deletedCount: successCount };
+  }
 }
 
 // ================= COMMENTS =================
@@ -551,5 +578,46 @@ export async function runAutonomousTask(id: string): Promise<{ message: string; 
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Erro ao executar tarefa autônoma.');
   return data;
+}
+
+// ================= HERO VIDEO & SITE SETTINGS =================
+const HERO_SETTINGS_STORAGE_KEY = 'realpremise_hero_settings_cache';
+
+export async function fetchHeroSettings(): Promise<HeroVideoSettings> {
+  try {
+    const res = await fetch('/api/settings/hero-video');
+    if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem(HERO_SETTINGS_STORAGE_KEY, JSON.stringify(data));
+      return data;
+    }
+  } catch (err) {
+    console.warn('Usando cache local de configurações da Hero');
+  }
+
+  const cached = localStorage.getItem(HERO_SETTINGS_STORAGE_KEY);
+  if (cached) {
+    try {
+      return JSON.parse(cached);
+    } catch {
+      // ignore
+    }
+  }
+  return INITIAL_HERO_SETTINGS;
+}
+
+export async function updateHeroSettings(updates: Partial<HeroVideoSettings>): Promise<HeroVideoSettings> {
+  const res = await fetch('/api/settings/hero-video', {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify(updates)
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Erro ao atualizar vídeo de fundo da Hero.');
+
+  const result = data.settings || data;
+  localStorage.setItem(HERO_SETTINGS_STORAGE_KEY, JSON.stringify(result));
+  return result;
 }
 

@@ -1,4 +1,4 @@
-import { Project, BlogPost, Comment, Subscriber, User, ChatSession, Partner, TeamMember } from '../types';
+import { Project, BlogPost, Comment, Subscriber, User, ChatSession, Partner, TeamMember, HeroVideoSettings } from '../types';
 
 export const INITIAL_USER: User = {
   id: 'usr-admin-01',
@@ -482,5 +482,64 @@ export const INITIAL_TEAM_MEMBERS: TeamMember[] = [
     featured: true,
     order: 1,
     active: true
+  }
+];
+
+export const INITIAL_HERO_SETTINGS: HeroVideoSettings = {
+  videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-charts-and-data-31912-large.mp4',
+  fallbackVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  posterUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1920',
+  opacity: 0.25,
+  enabled: true,
+  blurEffect: false
+};
+
+export const HERO_VIDEO_PRESETS: Array<{
+  id: string;
+  name: string;
+  category: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+  description: string;
+}> = [
+  {
+    id: 'preset-tech-data',
+    name: 'Telas & Dados Digitais',
+    category: 'Tecnologia & Dashboards',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-charts-and-data-31912-large.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400',
+    description: 'Animações modernas de gráficos, charts e interfaces digitais holográficas.'
+  },
+  {
+    id: 'preset-laser-lights',
+    name: 'Linhas de Laser & Neon',
+    category: 'Futurista & Alta Energia',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-animation-42571-large.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=400',
+    description: 'Feixes de luz laser e gradientes neon em perspectiva espacial.'
+  },
+  {
+    id: 'preset-tech-grid',
+    name: 'Malha Digital & Partículas',
+    category: 'Rede & Conectividade',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-grid-lines-and-digital-particles-42566-large.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=400',
+    description: 'Partículas flutuantes e malha geométrica com conexões em rede.'
+  },
+  {
+    id: 'preset-light-waves',
+    name: 'Curvas de Luz & Ondas Fluidas',
+    category: 'Minimalista & Elegante',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-flowing-curves-of-light-42567-large.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400',
+    description: 'Ondas suaves de luz dourada e rosa blush para estética premium.'
+  },
+  {
+    id: 'preset-energy-blaze',
+    name: 'Fogo Abstrato & Alta Velocidade',
+    category: 'Energia & Impacto',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400',
+    description: 'Chamas e partículas luminosas com alto impacto dinâmico.'
   }
 ];

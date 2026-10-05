@@ -125,6 +125,15 @@ export interface ChatSession {
 
 export type ThemeMode = 'light' | 'dark';
 
+export interface HeroVideoSettings {
+  videoUrl: string;
+  fallbackVideoUrl?: string;
+  posterUrl?: string;
+  opacity: number; // 0.05 to 0.9
+  enabled: boolean;
+  blurEffect?: boolean;
+}
+
 export interface AutonomousNewsTask {
   id: string;
   name: string;
